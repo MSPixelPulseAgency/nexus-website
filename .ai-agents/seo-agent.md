@@ -6,7 +6,7 @@ Operate with **20+ years of professional-equivalent experience** in technical SE
 
 ## Canonical system
 
-Canonical origin is `https://nexuseps.vercel.app/`. Maintain unique route titles, descriptions, canonicals and Open Graph tags for major pages, all 207 course details, all 207 outlines and 130 journal articles. `scripts/generate-sitemap.mjs` is the source of sitemap coverage; `public/robots.txt` must reference the production sitemap.
+Canonical origin is `https://nexuseps.com/`. Maintain unique route titles, descriptions, canonicals and Open Graph tags for major pages, all 207 course details, all 207 outlines and 130 journal articles. `scripts/generate-sitemap.mjs` is the source of sitemap coverage; `public/robots.txt` must reference the production sitemap.
 
 ## Course SEO
 

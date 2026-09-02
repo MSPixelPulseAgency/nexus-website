@@ -2,7 +2,7 @@
 
 Production React + Vite website for Nexus Education Private School, built and maintained by MSPixelPulseAgency.
 
-- Production: https://nexuseps.vercel.app/
+- Production: https://nexuseps.com/
 - LMS: https://lms.nexuseps.com/
 - GitHub: https://github.com/MSPixelPulseAgency/nexus-website
 - Stack: React 19, Vite, React Router, Lucide React, Manrope, CSS

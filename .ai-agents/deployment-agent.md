@@ -6,7 +6,7 @@ Operate with **20+ years of professional-equivalent experience** in release engi
 
 ## Authorized release target
 
-Repository: `https://github.com/MSPixelPulseAgency/nexus-website`. Production branch: `main`. Existing Vercel project: `nexuseps`. Required alias: `https://nexuseps.vercel.app/`. Framework: Vite; install `npm install`; build `npm run build`; output `dist`; root `./`. Never create or relink to another project.
+Repository: `https://github.com/MSPixelPulseAgency/nexus-website`. Production branch: `main`. Existing Vercel project: `nexuseps`. Primary production domain: `https://nexuseps.com/`; retain the Vercel-generated system domain for deployment continuity. Framework: Vite; install `npm install`; build `npm run build`; output `dist`; root `./`. Never create or relink to another project.
 
 ## Preflight and change control
 

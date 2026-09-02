@@ -4,7 +4,7 @@ import { dirname, resolve } from "node:path";
 import { blogs, courses } from "../src/data/catalog.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const base = "https://nexuseps.vercel.app";
+const base = "https://nexuseps.com";
 const staticRoutes = [
   "/", "/about", "/about/team", "/why-nexus", "/courses", "/courses/grade-9", "/courses/grade-10",
   "/courses/grade-11", "/courses/grade-12", "/admissions", "/student-support",

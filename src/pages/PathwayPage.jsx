@@ -5,6 +5,7 @@ import Reveal from "../components/Reveal";
 import Seo from "../components/Seo";
 import { CTASection, CheckList, SectionHeading } from "../components/UI";
 import { pathwayGuides } from "../data/pathwayGuides";
+import { brand } from "../data/site";
 import NotFoundPage from "./NotFoundPage";
 
 export default function PathwayPage({ slug }) {
@@ -14,8 +15,8 @@ export default function PathwayPage({ slug }) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://nexuseps.vercel.app/" },
-      { "@type": "ListItem", position: 2, name: guide.title.replace(/\.$/, ""), item: `https://nexuseps.vercel.app${guide.path}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${brand.canonical}/` },
+      { "@type": "ListItem", position: 2, name: guide.title.replace(/\.$/, ""), item: `${brand.canonical}${guide.path}` },
     ],
   };
 

@@ -4,7 +4,8 @@ export const brand = {
   email: "hello@mspixelpulse.com",
   phone: "+1 (000) 000-0000",
   lms: "https://lms.nexuseps.com/",
-  canonical: "https://nexuseps.vercel.app",
+  canonical: "https://nexuseps.com",
+  socialImage: "https://nexuseps.com/social/nexus-education-social-cover.png",
 };
 
 export const navigation = [
@@ -145,6 +146,10 @@ export const staticMeta = {
   "/about/team": ["Meet the Nexus Team | Nexus Education", "Meet the approved people supporting the Nexus school website, learning platform and future staff directory."],
   "/why-nexus": ["Why Nexus Education Private School", "Discover the clear, student-focused and future-ready approach behind Nexus Education Private School."],
   "/courses": ["Ontario Credit Courses | Nexus Education", "Search 207 Nexus catalogue records by exact code, title, grade, course type and department."],
+  "/courses/grade-9": ["Grade 9 Ontario Courses | Nexus Education", "Explore Grade 9 Ontario secondary course records in the Nexus Education catalogue."],
+  "/courses/grade-10": ["Grade 10 Ontario Courses | Nexus Education", "Explore Grade 10 Ontario secondary course records in the Nexus Education catalogue."],
+  "/courses/grade-11": ["Grade 11 Ontario Courses | Nexus Education", "Explore Grade 11 Ontario secondary course records in the Nexus Education catalogue."],
+  "/courses/grade-12": ["Grade 12 Ontario Courses | Nexus Education", "Explore Grade 12 Ontario secondary course records in the Nexus Education catalogue."],
   "/admissions": ["Admissions | Nexus Education Private School", "Explore the Nexus inquiry and admissions process, prerequisite guidance and enrollment preparation."],
   "/student-support": ["Student Support | Nexus Education", "Find support for course selection, prerequisites, academic planning and the Nexus learning platform."],
   "/online-learning": ["Online Learning | Nexus Education", "Learn how Nexus organizes digital learning, assignments, progress tracking and student communication."],

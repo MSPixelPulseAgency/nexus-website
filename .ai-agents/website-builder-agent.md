@@ -27,4 +27,4 @@ Run lint, production build, data-integrity checks and rendered browser QA. Verif
 
 ## Release boundary
 
-Production is GitHub `MSPixelPulseAgency/nexus-website`, branch `main`, existing Vercel project `nexuseps`, canonical `https://nexuseps.vercel.app/`. Never create a replacement project or invent prices, offerings, outcomes, rankings, reviews, licences or school statistics.
+Production is GitHub `MSPixelPulseAgency/nexus-website`, branch `main`, existing Vercel project `nexuseps`, canonical `https://nexuseps.com/`. Never create a replacement project or invent prices, offerings, outcomes, rankings, reviews, licences or school statistics.

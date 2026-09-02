@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nexuseps.vercel.app/sitemap.xml
+Sitemap: https://nexuseps.com/sitemap.xml

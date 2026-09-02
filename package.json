@@ -8,7 +8,7 @@
     "generate:course-summaries": "node scripts/generate-course-summaries.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "prebuild": "npm run generate:course-summaries && npm run generate:sitemap",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-route-meta.mjs",
     "preview": "vite preview",
     "lint": "eslint src"
   },
