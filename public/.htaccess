@@ -1,0 +1,18 @@
+DirectoryIndex index.html
+Options -Indexes
+
+RewriteEngine On
+
+# Serve prerendered route metadata from the Cloudways route store. Keeping
+# route HTML outside the public path prevents Nginx from forcing trailing
+# slashes on routes that also have child pages.
+RewriteCond %{DOCUMENT_ROOT}/.routes/$1.html -f
+RewriteRule ^(.+?)/?$ .routes/$1.html [END]
+
+# Let real files and directories pass through unchanged.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [END]
+
+# Return the React 404 experience while preserving the HTTP 404 status.
+ErrorDocument 404 /index.html
