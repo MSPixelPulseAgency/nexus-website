@@ -3,6 +3,10 @@ Options -Indexes
 
 RewriteEngine On
 
+# Keep the apex domain canonical across every route after the Cloudways cutover.
+RewriteCond %{HTTP_HOST} ^www\.nexuseps\.com$ [NC]
+RewriteRule ^ https://nexuseps.com%{REQUEST_URI} [R=301,L,NE]
+
 # Serve prerendered route metadata from the Cloudways route store. Keeping
 # route HTML outside the public path prevents Nginx from forcing trailing
 # slashes on routes that also have child pages.
