@@ -1,0 +1,5 @@
+# Only the four endpoint scripts are addressable; the shared bootstrap is never served directly.
+<Files "_bootstrap.php">
+  Require all denied
+</Files>
+Options -Indexes

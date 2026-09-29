@@ -31,6 +31,7 @@ const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const PathwayPage = lazy(() => import("./pages/PathwayPage"));
 const VideosPage = lazy(() => import("./pages/VideosPage"));
 const ResourcesPage = lazy(() => import("./pages/ResourcesPage"));
+const BrandGuidelinesPage = lazy(() => import("./pages/BrandGuidelinesPage"));
 
 export default function App() {
   return (
@@ -81,6 +82,7 @@ export default function App() {
           <Route path="/college-planning" element={<ResourceGuidePage slug="college-planning" />} />
           <Route path="/parent-guardian-guide" element={<ResourceGuidePage slug="parent-guardian-guide" />} />
           <Route path="/why-nexus" element={<AboutPage />} />
+          <Route path="/brand-guidelines" element={<BrandGuidelinesPage />} />
           <Route path="/privacy" element={<LegalPage type="privacy" />} />
           <Route path="/terms" element={<LegalPage type="terms" />} />
           <Route path="/accessibility" element={<LegalPage type="accessibility" />} />

@@ -9,5 +9,12 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/api/brand/:path*",
+      "destination": "/brand-guidelines",
+      "permanent": false
+    }
   ]
 }

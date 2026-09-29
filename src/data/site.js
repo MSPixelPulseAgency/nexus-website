@@ -177,6 +177,7 @@ export const staticMeta = {
   "/university-planning": ["Ontario University Course Planning Guide | Nexus Education", "Build a high school course plan around current university prerequisites and official sources."],
   "/college-planning": ["Ontario College Course Planning Guide | Nexus Education", "Compare Ontario college program requirements, prerequisites and preparation."],
   "/parent-guardian-guide": ["Parent and Guardian Course Planning Guide | Nexus Education", "Practical prompts for families supporting course research and independent learning habits."],
+  "/brand-guidelines": ["Brand Guidelines | Nexus Education Private School", "Explore the Nexus visual identity: logo, colours, typography and usage rules, with protected access to official brand assets."],
   "/privacy": ["Privacy | Nexus Education", "Read how Nexus handles website inquiries, contact information and public submissions."],
   "/terms": ["Terms of Use | Nexus Education", "Read the terms for using the Nexus Education Private School website and course catalogue."],
   "/accessibility": ["Accessibility | Nexus Education", "Read the Nexus commitment to an accessible website experience and how to report a barrier."],

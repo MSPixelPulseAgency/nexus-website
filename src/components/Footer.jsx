@@ -5,7 +5,7 @@ import { brand } from "../data/site";
 import { Brand } from "./Header";
 
 const groups = [
-  ["Nexus", [["About", "/about"], ["Our Team", "/about/team"], ["Why Nexus", "/why-nexus"], ["Admissions", "/admissions"], ["Contact", "/contact"]]],
+  ["Nexus", [["About", "/about"], ["Our Team", "/about/team"], ["Why Nexus", "/why-nexus"], ["Admissions", "/admissions"], ["Contact", "/contact"], ["Brand Guidelines", "/brand-guidelines"]]],
   ["Courses", [["All Courses", "/courses"], ["Grade 9", "/courses/grade-9"], ["Grade 10", "/courses/grade-10"], ["Grade 11", "/courses/grade-11"], ["Grade 12", "/courses/grade-12"], ["Upgrade Courses", "/upgrade-courses"], ["Credit Recovery", "/credit-recovery"]]],
   ["Student Support", [["Academic Planning", "/academic-planning"], ["OSSD", "/ossd"], ["OUAC", "/ouac"], ["OCAS", "/ocas"], ["Adult Education", "/adult-education"], ["Mature Students", "/mature-students"]]],
   ["Resources", [["Official Resource Hub", "/resources"], ["Official Videos", "/student-resources/videos"], ["Online Learning", "/online-learning"], ["Blog", "/blog"], ["Reviews", "/reviews"], ["FAQ", "/faq"], ["Course Cart", "/cart"]]],

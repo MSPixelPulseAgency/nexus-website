@@ -28,8 +28,11 @@ npm run build
 - `src/styles/` — global tokens, component styles, logo-led brand theme and responsive breakpoints
 - `scripts/generate-sitemap.mjs` — sitemap generation
 - `.ai-agents/` — maintenance rules for future AI-assisted work
+- `public/api/brand/` + `server/` — PHP password gate for protected brand-asset downloads (see `docs/brand-asset-access.md`)
 
 ## Production notes
+
+Production currently serves `dist/` from the Cloudways (Apache + PHP) host behind `public/.htaccess`; the Vercel project remains linked for deployment continuity. The `/brand-guidelines` page is public, while its downloads are protected by the PHP endpoints documented in `docs/brand-asset-access.md`, which need a one-time secret configuration outside the web root.
 
 The site must remain linked to the existing Vercel project `nexuseps`, use the `main` production branch, build with `npm run build`, and output `dist`. `vercel.json` provides the SPA rewrite required for direct route refreshes.
 

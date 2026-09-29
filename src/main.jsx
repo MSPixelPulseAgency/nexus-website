@@ -9,4 +9,5 @@ import './styles/footer-logo-fix.css'
 import './styles/course-detail-color-fix.css'
 import './styles/footer-mobile-lms-fix.css'
 import './styles/future-education-section-fix.css'
+import './styles/brand-guidelines.css'
 createRoot(document.getElementById('root')).render(<React.StrictMode><App/></React.StrictMode>)
