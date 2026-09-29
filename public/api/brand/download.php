@@ -54,6 +54,14 @@ $handle = fopen($path, 'rb');
 if ($handle === false) {
     nexus_brand_json(500, ['ok' => false, 'error' => 'read_failed']);
 }
-fpassthru($handle);
+// Some managed PHP hosts disable fpassthru(); bounded reads work without
+// changing host security settings or buffering the entire brand package.
+while (!feof($handle)) {
+    $chunk = fread($handle, 65536);
+    if ($chunk === false) {
+        break;
+    }
+    echo $chunk;
+}
 fclose($handle);
 exit;
