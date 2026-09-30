@@ -1,7 +1,7 @@
 export const brand = {
   name: "Nexus Education Private School",
   shortName: "Nexus Education",
-  email: "hello@mspixelpulse.com",
+  email: "admin@nexuseps.com",
   phone: "+1 (000) 000-0000",
   lms: "https://lms.nexuseps.com/",
   canonical: "https://nexuseps.com",

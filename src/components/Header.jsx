@@ -7,8 +7,8 @@ import { brand } from "../data/site";
 const menuGroups = [
   {
     label: "About Us",
-    paths: ["/about", "/why-nexus", "/blog", "/reviews"],
-    links: [["About Nexus", "/about"], ["Our Team", "/about/team"], ["Why Nexus", "/why-nexus"], ["Nexus Journal", "/blog"], ["Reviews", "/reviews"]],
+    paths: ["/about", "/why-nexus", "/blog", "/reviews", "/brand-guidelines"],
+    links: [["About Nexus", "/about"], ["Our Team", "/about/team"], ["Why Nexus", "/why-nexus"], ["Nexus Journal", "/blog"], ["Reviews", "/reviews"], ["Brand Guidelines", "/brand-guidelines"]],
   },
   {
     label: "Courses",

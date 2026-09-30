@@ -1,6 +1,6 @@
 # Nexus Education Private School
 
-Production React + Vite website for Nexus Education Private School, built and maintained by MSPixelPulseAgency.
+Production React + Vite website for Nexus Education Private School, built and maintained by MSPixelPulse Web Solutions (https://mspixelpulse.com).
 
 - Production: https://nexuseps.com/
 - LMS: https://lms.nexuseps.com/

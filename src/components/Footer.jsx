@@ -27,7 +27,7 @@ export default function Footer() {
         <div className="footer-links">{groups.map(([heading, links]) => <div key={heading}><h2>{heading}</h2>{links.map(([label, to]) => <Link key={to} to={to}>{label}</Link>)}</div>)}</div>
       </div>
       <div className="container footer-lms"><div><strong>Already enrolled?</strong><span>Continue your learning in the secure Nexus LMS.</span></div><a href={brand.lms} target="_blank" rel="noreferrer">Open LMS <ArrowUpRight size={17} /></a></div>
-      <div className="container footer-bottom"><span>© {new Date().getFullYear()} Nexus Education Private School.</span><span className="legal-links"><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link><Link to="/accessibility">Accessibility</Link><Link to="/policies">Policies</Link></span><span>Website by MSPixelPulse</span></div>
+      <div className="container footer-bottom"><span>© {new Date().getFullYear()} Nexus Education Private School.</span><span className="legal-links"><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link><Link to="/accessibility">Accessibility</Link><Link to="/policies">Policies</Link></span><span>Website by <a href="https://mspixelpulse.com" target="_blank" rel="noreferrer">MSPixelPulse Web Solutions</a></span></div>
     </footer>
   );
 }

@@ -1,0 +1,20 @@
+/* Desktop header: three-column grid with equal side columns so the centre navigation group is centred on the container. */
+@media (min-width: 1220px) {
+  .nav-shell { display: grid; grid-template-columns: minmax(218px, 1fr) auto minmax(218px, 1fr); align-items: center; gap: 10px; padding-inline: 12px; }
+  .desktop-brand { flex: none; justify-self: start; }
+  .desktop-nav { margin-left: 0; justify-self: center; justify-content: center; }
+  .desktop-nav-actions { justify-self: end; }
+  .mobile-header-grid { display: none; }
+}
+/* Company partner card treatment (team page) */
+.staff-photo-placeholder.is-company { background: radial-gradient(circle at 72% 18%, rgba(249,152,32,.22), transparent 36%), linear-gradient(145deg, var(--navy-deep), var(--navy) 65%, #1268cf); color: #fff; }
+.staff-photo-placeholder.is-company .company-mark { width: 112px; height: 112px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 32px; background: rgba(255,255,255,.1); backdrop-filter: blur(8px); }
+.staff-photo-placeholder.is-company small { color: var(--navy); }
+/* Homepage digital-learning card */
+.home-digital-card { display: grid; grid-template-columns: minmax(220px, .8fr) minmax(0, 1.2fr); overflow: hidden; border: 1px solid var(--border); border-radius: 32px; background: rgba(255,255,255,.94); box-shadow: var(--shadow); }
+.home-digital-card img { width: 100%; height: 100%; min-height: 300px; object-fit: cover; }
+.home-digital-card > div { padding: clamp(24px, 4vw, 40px); }
+.home-digital-card h3 { margin: 8px 0 10px; font-size: clamp(1.4rem, 2.6vw, 1.9rem); }
+.home-digital-card p { font-size: .92rem; }
+.home-digital-card .button-row { margin-top: 18px; }
+@media (max-width: 720px) { .home-digital-card { grid-template-columns: minmax(0, 1fr); } .home-digital-card img { min-height: 200px; } }

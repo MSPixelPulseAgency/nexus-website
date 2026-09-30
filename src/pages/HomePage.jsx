@@ -16,13 +16,11 @@ import NexusSearch from "../components/NexusSearch";
 import OfficialResourceGrid from "../components/OfficialResourceGrid";
 import Reveal from "../components/Reveal";
 import Seo from "../components/Seo";
-import StaffCard from "../components/StaffCard";
 import { CTASection, SectionHeading } from "../components/UI";
 import { homeBlogs as blogs, homeCourses as courses, homeGradeCounts as gradeCounts, homePopularCourses as featuredCourses } from "../data/homeCatalog";
 import { faqGroups } from "../data/content";
 import { officialResources } from "../data/officialResources";
 import { brand, images } from "../data/site";
-import { teamMembers } from "../data/team";
 import { officialVideos } from "../data/videos";
 
 const trustItems = [
@@ -174,7 +172,7 @@ export default function HomePage() {
         </div>
       </Reveal>
 
-      <Reveal as="section" className="section container home-team-section"><div><SectionHeading eyebrow="PEOPLE & TECHNOLOGY" title="A human experience, supported by reliable digital tools." text="Meet approved team members and see how the public website connects students with learning and support." /><Link className="btn btn-primary" to="/about/team">Meet the Nexus Team <ArrowRight size={17} /></Link></div><StaffCard member={teamMembers[0]} compact /></Reveal>
+      <Reveal as="section" className="section container home-team-section"><div><SectionHeading eyebrow="PEOPLE & TECHNOLOGY" title="A human experience, supported by reliable digital tools." text="Meet approved team members and see how the public website connects students with learning and support." /><Link className="btn btn-primary" to="/about/team">Meet the Nexus Team <ArrowRight size={17} /></Link></div><article className="home-digital-card"><img src={images.onlineLesson} alt="Student joining an online lesson from a laptop" width="1400" height="900" loading="lazy" decoding="async" /><div><span className="mini-label">DIGITAL LEARNING</span><h3>One clear path from the website to the learning portal.</h3><p>Browse the course catalogue, plan next steps and, once enrolled, continue in the secure Nexus LMS with assignments, progress and communication in one place.</p><div className="button-row"><Link className="btn btn-secondary" to="/online-learning">How Online Learning Works <ArrowRight size={16} /></Link></div></div></article></Reveal>
 
       <Reveal as="section" className="section soft-section"><div className="container home-video-section"><div><SectionHeading eyebrow="OFFICIAL VIDEO HIGHLIGHT" title="Understand the application process before you begin." text="Official-source videos stay lightweight until you press Play, reducing page weight and unnecessary tracking requests." /><Link className="btn btn-secondary" to="/student-resources/videos">Browse the Video Library <ArrowRight size={17} /></Link></div><LazyVideoCard video={officialVideos[0]} /></div></Reveal>
 
