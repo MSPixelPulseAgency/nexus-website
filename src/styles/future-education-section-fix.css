@@ -296,3 +296,7 @@
   .home-video-section .lazy-video-copy { padding-right: 64px; }
   .home-video-section .video-duration { right: auto; left: 13px; }
 }
+
+@media (min-width: 721px) and (max-width: 820px) {
+  .home-video-section .lazy-video-copy { padding-right: 120px; }
+}
