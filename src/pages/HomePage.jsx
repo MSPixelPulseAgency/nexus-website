@@ -1,6 +1,6 @@
 import {
   ArrowLeft, ArrowRight, Atom, Backpack, BookOpenCheck, Bot, BrainCircuit, BriefcaseBusiness,
-  Calculator, ChevronRight, CircleUserRound, Code2, Compass, Cpu, GraduationCap,
+  Calculator, ChevronRight, CircleUserRound, Code2, Compass, Cpu, FlaskConical, GraduationCap,
   Headphones, Languages, Laptop2, Lightbulb, Landmark, Palette, Route, School, ShieldCheck,
   Sparkles, Star, Target, University, UsersRound,
 } from "lucide-react";
@@ -139,10 +139,10 @@ export default function HomePage() {
         <div className="feature-grid">{advantages.map(([Icon, title, text], index) => <article className="feature-card" key={title}><span className="feature-index">0{index + 1}</span><span className="icon-bubble"><Icon size={21} /></span><h3>{title}</h3><p>{text}</p></article>)}</div>
       </Reveal>
 
-      <Reveal as="section" className="section container">
+      <Reveal as="section" className="section container home-future-section">
         <div className="future-panel">
           <div><span className="eyebrow eyebrow-dark"><Bot size={14} /> THE FUTURE OF EDUCATION</span><h2>Learn Today.<br />Lead Tomorrow.</h2><p>Build confidence, problem-solving skills, digital fluency and the ability to keep learning in a changing world.</p><Link className="btn btn-light" to="/about">Discover the Nexus Approach <ArrowRight size={17} /></Link></div>
-          <div className="future-visual"><img src={images.science} alt="Students learning together in a modern science environment" width="1400" height="900" loading="lazy" decoding="async" /><div className="future-topics" aria-label="Future-ready learning themes">{["AI", "STEM", "CODE", "SCIENCE", "CREATE", "ENGINEERING"].map((topic) => <span key={topic}>{topic}</span>)}</div></div>
+          <div className="future-visual"><img src={images.science} alt="Laboratory glassware and a pipette in a science lab" width="1400" height="900" loading="lazy" decoding="async" /><div className="future-topics" aria-label="Future-ready learning themes">{[[BrainCircuit, "AI"], [Cpu, "STEM"], [Code2, "CODE"], [FlaskConical, "SCIENCE"]].map(([Icon, topic]) => <div className="future-topic" key={topic}><span className="future-topic-icon"><Icon size={24} strokeWidth={1.8} aria-hidden="true" /></span><strong>{topic}</strong></div>)}</div></div>
         </div>
       </Reveal>
 
@@ -174,7 +174,7 @@ export default function HomePage() {
 
       <Reveal as="section" className="section container home-team-section"><div><SectionHeading eyebrow="PEOPLE & TECHNOLOGY" title="A human experience, supported by reliable digital tools." text="Meet approved team members and see how the public website connects students with learning and support." /><Link className="btn btn-primary" to="/about/team">Meet the Nexus Team <ArrowRight size={17} /></Link></div><article className="home-digital-card"><img src={images.onlineLesson} alt="Student joining an online lesson from a laptop" width="1400" height="900" loading="lazy" decoding="async" /><div><span className="mini-label">DIGITAL LEARNING</span><h3>One clear path from the website to the learning portal.</h3><p>Browse the course catalogue, plan next steps and, once enrolled, continue in the secure Nexus LMS with assignments, progress and communication in one place.</p><div className="button-row"><Link className="btn btn-secondary" to="/online-learning">How Online Learning Works <ArrowRight size={16} /></Link></div></div></article></Reveal>
 
-      <Reveal as="section" className="section soft-section"><div className="container home-video-section"><div><SectionHeading eyebrow="OFFICIAL VIDEO HIGHLIGHT" title="Understand the application process before you begin." text="Official-source videos stay lightweight until you press Play, reducing page weight and unnecessary tracking requests." /><Link className="btn btn-secondary" to="/student-resources/videos">Browse the Video Library <ArrowRight size={17} /></Link></div><LazyVideoCard video={officialVideos[0]} /></div></Reveal>
+      <Reveal as="section" className="section soft-section home-video-highlight"><div className="container home-video-section"><div><SectionHeading eyebrow="OFFICIAL VIDEO HIGHLIGHT" title="Understand the application process before you begin." text="Follow the official OUAC walkthrough to complete, review and submit your Ontario university application with confidence." /><Link className="btn btn-secondary" to="/student-resources/videos">Browse the Video Library <ArrowRight size={17} /></Link></div><LazyVideoCard video={officialVideos[0]} featured /></div></Reveal>
 
       <Reveal as="section" className="section container">
         <div className="reviews-preview reviews-carousel" role="region" aria-label="Nexus review status">

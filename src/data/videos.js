@@ -1,11 +1,12 @@
 export const officialVideos = [
   {
-    title: "How to Complete Your OUAC Undergraduate Application",
+    title: "How to Complete Your Undergraduate Application to an Ontario University (OUAC)",
     organization: "Ontario Universities' Application Centre",
     category: "OUAC",
-    youtubeId: "PWfDsBNfon8",
+    youtubeId: "pUvpN6nojMg",
+    thumbnail: "/images/ouac-undergraduate-application.webp",
     description: "An official walkthrough of completing, reviewing and paying for an Ontario university undergraduate application.",
-    source: "https://www.ouac.on.ca/guide/undergrad-guide/",
+    source: "https://www.ouac.on.ca/videos/how-to-videos/",
   },
   {
     title: "Build Your Future in the Skilled Trades",
