@@ -83,6 +83,12 @@ try {
     check(true, 'Configured sandbox permits cart requests');
     $liveCart = new Payments(array_replace($config, ['cart_enabled' => true, 'mode' => 'live', 'secret_key' => 'sk_live_unitfixture', 'live_approved' => true, 'pricing_approved' => true]), $gateway);
     rejects(static fn () => $liveCart->requireCartEnabled(), 503);
+    $approvedLiveCart = new Payments(array_replace($liveCart->config, ['self_service_approved' => true]), $gateway);
+    $approvedLiveCart->requireCartEnabled();
+    check(true, 'Live cart is prepared behind explicit live, pricing and self-service approvals');
+    $pausedLiveCart = new Payments(array_replace($approvedLiveCart->config, ['enabled' => false]), $gateway);
+    rejects(static fn () => $pausedLiveCart->requireCartEnabled(), 503);
+    rejects(static fn () => Payments::validateConfig(array_replace($approvedLiveCart->config, ['pricing_approved' => false])), 503);
     rejects(static fn () => $disabled->issue('TEST-ONLY', ['MHF4U'], 1000), 503);
     rejects(static fn () => $payments->issue('TEST-ONLY', ['UNKNOWN'], 1000), 422);
     rejects(static fn () => $payments->issue('TEST-ONLY', ['MHF4U', 'MHF4U'], 1000), 400);
@@ -163,7 +169,7 @@ try {
     check(!str_contains(json_encode($payments->quote($id)), $token), 'Public quote contains no bearer token');
     echo "PASS: {$assertions} payment checks; no external Stripe calls or real charges.\n";
 } finally {
-    unset($payments, $disabled, $liveStore, $cartReady, $liveCart);
+    unset($payments, $disabled, $liveStore, $cartReady, $liveCart, $approvedLiveCart, $pausedLiveCart);
     if (is_dir($dir)) {
         foreach (glob($dir . '/*') as $file) unlink($file);
         rmdir($dir);

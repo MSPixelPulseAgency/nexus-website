@@ -107,11 +107,18 @@ final class Payments
     public function requireCartEnabled(): void
     {
         $this->requireEnabled();
-        // Public self-service is sandbox-only until Nexus approves enrollment,
-        // availability, tax treatment, refunds and live collection separately.
-        if (($this->config['cart_enabled'] ?? false) !== true || $this->config['mode'] !== 'test') {
+        if (!self::cartConfigured($this->config)) {
             throw new PaymentError(503, 'Course checkout is not available yet. Contact Nexus to continue.');
         }
+    }
+
+    public static function cartConfigured(array $config): bool
+    {
+        // Live self-service requires its own explicit management decision in
+        // addition to account/pricing approval. All approval defaults stay false.
+        return ($config['cart_enabled'] ?? false) === true && (($config['mode'] ?? '') === 'test'
+            || (($config['mode'] ?? '') === 'live' && ($config['live_approved'] ?? false) === true
+                && ($config['pricing_approved'] ?? false) === true && ($config['self_service_approved'] ?? false) === true));
     }
 
     public function validateCodes(array $codes): void

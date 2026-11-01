@@ -4,10 +4,11 @@
 $appDir = getenv('NEXUS_PAYMENT_APP_DIR') ?: (is_file(__DIR__ . '/src/Payments.php') ? __DIR__ : __DIR__ . '/nexus-payments');
 return [
     'enabled' => false,
-    'cart_enabled' => false, // Enable only in a configured Nexus sandbox.
+    'cart_enabled' => false,
     'mode' => 'test',
     'live_approved' => false,
     'pricing_approved' => false,
+    'self_service_approved' => false, // Separate approval for live public cart collection.
     'base_url' => 'http://127.0.0.1:8787',
     'allow_local_http' => true, // false on every hosted environment
     'expected_account_id' => '', // Confirm Nexus's account in Stripe, not the agency's.

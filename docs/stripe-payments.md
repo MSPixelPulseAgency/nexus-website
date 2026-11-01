@@ -5,10 +5,10 @@
 - Nexus Education Private School is the merchant. MSPixelPulse is the temporary technical administrator, never a substitute legal merchant or owner.
 - The existing merchant account was retained. Its associated Nexus sandbox and the technical sign-in `admin@mspixelpulse.com` were verified in Dashboard. Stripe did not display an explicit email-verification indicator; email verification is unconfirmed.
 - The welcome flow accepted the Nexus display name, Canada, `https://nexuseps.com` and a private secondary-education description with one-time tuition payments. Optional invoicing and tax products were deselected. This is not legal/KYC verification.
-- The user explicitly requested **CAD 499.00 for every course**, displayed as **CA$499 / course**, and authorized sandbox verification. All 207 catalogue entries now use this amount on this review branch. Production prices have not been deployed. Tax treatment, additional fees, availability, refunds and live collection still require management confirmation.
+- The user explicitly requested **CAD 499.00 for every course**, displayed as **CA$499 / course**, and authorized sandbox verification. All 207 catalogue entries now use this amount on this review branch. Catalogue prices and the disabled PHP service are deployed to the existing Cloudways website application. Tax treatment, additional fees, availability, refunds and live collection still require management confirmation.
 - Two real Stripe sandbox Checkout payments at CAD 499.00 were confirmed: MHF4U and a subsequent ENG4U cancellation/decline/3D Secure retry. Each signed `checkout.session.completed` webhook returned HTTP 200; private state and browser receipts showed paid. No real funds moved.
 - An existing sandbox key was used for the Nexus account check, session creation and local Stripe CLI forwarding. Test credentials were held in runtime memory, never placed in source, frontend, command arguments or configuration files. No new key, live credential or permanent Dashboard webhook destination was created.
-- Checkout preparation remains on a draft review branch. No merge, Cloudways production deployment, live activation or Moodle changes were performed.
+- PR #5 was merged after successful checks. The website and disabled private PHP service were installed on the existing Cloudways application with a verified rollback backup. Live activation, real payments and Moodle changes were not performed. The final release SHA and HTTP evidence are recorded in the release handover.
 - Registration now displays course tuition and links the selected cart to sandbox payment, with a return link from the receipt. Student/guardian delivery remains disabled pending an approved school destination and privacy/retention arrangements. Payment does not complete registration.
 
 ## Payment and enrollment flow
@@ -21,7 +21,7 @@ Cart → registration (optional preparation) → `/checkout?cart=1` → Stripe-h
 
 `cart.php` accepts only a JSON list of 1–12 distinct course codes. The server validates catalogue membership and looks up its configured prices. Same-origin JSON checks, private HttpOnly/SameSite cookies, IP rate limits and per-session cart fingerprints prevent tampering and reuse the same request for repeated clicks. A repeat of a paid cart shows the existing paid request; it never silently charges again. Changing course order does not create a new request. Courses in local storage are normalized against the current catalogue on load.
 
-Self-service requires both `enabled=true` and `cart_enabled=true`, and is hard-disabled outside `mode=test`. Do not remove the live guard as part of deployment. Live self-service needs a separately approved enrollment/availability, privacy, fee/tax and refund workflow.
+Self-service requires both `enabled=true` and `cart_enabled=true`. Test mode supports sandbox collection. Live mode additionally requires `live_approved=true`, `pricing_approved=true` and the separate `self_service_approved=true` decision covering public cart collection, enrollment/availability, privacy, fees/taxes and refunds. Without all approvals the server refuses live cart requests. The production installation keeps collection and every approval flag false. Future approved live cart launch needs configuration changes, not another code change.
 
 Only course identifiers, tuition and opaque references enter the payment service. No student, guardian or academic fields enter Stripe metadata. Stripe-hosted Checkout collects the synthetic test payer/card details. Do not use real student or payment data in sandbox testing.
 
@@ -63,7 +63,7 @@ Use the host's secret manager/environment editor. Never put secret values in cha
 
 Private config requirements:
 
-- Start with `enabled=false`, `cart_enabled=false`, `mode=test`, `live_approved=false`, `pricing_approved=false`. Enable cart only in a verified sandbox.
+- Start with `enabled=false`, `cart_enabled=false`, `mode=test`, `live_approved=false`, `pricing_approved=false`, `self_service_approved=false`. During preparation, enable cart only in a verified sandbox; future live collection requires the separate approvals above.
 - `base_url`: exact staging HTTPS origin without trailing slash; `allow_local_http=false` on hosted systems.
 - `expected_account_id`: independently confirm Nexus's account. The credential's account is checked before creating/reconciling sessions.
 - `prices`: the generated catalogue map supplies CAD 499.00 per course for this user-requested sandbox flow. Catalogue membership is not confirmation of course availability or student eligibility. Operator requests may use a narrower reviewed price map.
@@ -124,12 +124,12 @@ Checkout and return-page reads are bound to the displayed opaque request ID as w
 ## Verification evidence
 
 - Frontend lint/build and strict Composer validation pass; Composer audit reports no known advisories.
-- 51 local payment/signature/cart-mode/ACL checks, 44 HTTP/cookie/operator/cart checks and 10 read-only deployment preflight checks pass. The pricing check independently validates all 207 frontend/server entries and the public/private release fingerprint. No external Stripe requests or real charges are made by these suites.
+- 54 local payment/signature/cart-mode/ACL/expiry/approval checks, 48 HTTP/cookie/operator/cart checks and 11 read-only deployment preflight checks pass. The pricing check independently validates all 207 frontend/server entries and the public/private release fingerprint. No external Stripe requests or real charges are made by these suites.
 - Browser: synthetic CA$499 request rendered; token removed from URL; keyboard navigation verified; no browser errors observed. No horizontal overflow at 320, 360, 375, 390, 412, 430, 768, 820, 1024, 1280, 1440, 1728 and 1920 pixels.
 - Direct success-page navigation shows waiting for confirmation, never a forged paid state. Payment routes have noindex metadata; success/cancel are excluded from the sitemap.
 - The enrollment reminder is suppressed on payment pages; existing styling and cart/enrollment data remain intact.
 - The catalogue still contains 207 courses and the sitemap still contains 582 URLs.
-- **External sandbox acceptance:** an actual Nexus sandbox session and successful test card payment passed with signed CLI webhook forwarding and a server-confirmed receipt. Cancellation/back reused the same Stripe session; an official decline card displayed its error without marking the request paid, then a 3D Secure test card completed the simulated challenge and the same session reconciled as paid through a signed webhook returning HTTP 200. The two-course cart displayed CA$998. A permanent HTTPS staging destination, authenticated Cloudways runtime/storage/cache verification and live readiness remain outstanding. Sandbox success is not production approval.
+- **External sandbox acceptance:** an actual Nexus sandbox session and successful test card payment passed with signed CLI webhook forwarding and a server-confirmed receipt. Cancellation/back reused the same Stripe session; an official decline card displayed its error without marking the request paid, then a 3D Secure test card completed the simulated challenge and the same session reconciled as paid through a signed webhook returning HTTP 200. The two-course cart displayed CA$998. Authenticated production runtime/storage/cache/private-file checks now pass. A live Stripe key/destination is not installed while management activation and launch approval are pending; a local signed sandbox receipt is not proof of live readiness.
 
 ## Disabled release preparation — continuation verification
 
@@ -143,7 +143,7 @@ php /absolute/private/nexus-payments/preflight.php \
   --document-root=/absolute/public_html
 ```
 
-The state directory must already exist privately with mode 0700 and config normally uses 0600. On Cloudways, master-user uploads and PHP use different users: pass `--runtime-user=<verified-application-user>` to permit a narrow numeric POSIX ACL for the operator and that application user only. Group/other access, unrelated ACL users, runtime writes to master-owned config, and unsafe inherited ACLs are rejected. Grant runtime read/traverse on private code/config and read/write/traverse on state; retain operator access for backup. Do not use 0777 or broadly readable config. The command verifies PHP/cURL/PDO SQLite, private placement, disabled checkout, HTTPS config, public endpoints, and matching public/private catalogue and config. It returns nonzero on any failed check. Its `liveLaunchApproved` value is always false: an offline preflight cannot authorize launch or prove real HTTPS/cache/webhook behavior.
+Pre-create test/live SQLite files under the deployment operator before exposing the endpoints, grant only the verified PHP application user read/write through a narrow ACL, and retain operator access for administration/backup. This avoids SQLite file creation modes leaving the operator read-only. The state directory must already exist privately with mode 0700 and config normally uses 0600. On Cloudways, master-user uploads and PHP use different users: pass `--runtime-user=<verified-application-user>` to permit a narrow numeric POSIX ACL for the operator and that application user only. Group/other access, unrelated ACL users, runtime writes to master-owned config, and unsafe inherited ACLs are rejected. Grant runtime read/traverse on private code/config and read/write/traverse on state; retain operator access for backup. Do not use 0777 or broadly readable config. The command verifies PHP/cURL/PDO SQLite, private placement, disabled checkout, HTTPS config, public endpoints, and matching public/private catalogue and config. It returns nonzero on any failed check. Its `liveLaunchApproved` value is always false: an offline preflight cannot authorize launch or prove real HTTPS/cache/webhook behavior.
 
 From a clean committed checkout, prepare an archive outside the repo:
 
@@ -179,4 +179,8 @@ Official references: [Checkout API](https://docs.stripe.com/api/checkout/session
 
 ## Final journey fixes
 
-Blocked/full browser storage no longer breaks the cart. Payment availability falls back after eight seconds and announces its status accessibly. The server quote exposes its immutable Checkout expiry so the review page stops offering a nearly expired session; paid receipts remain readable. Six ACL security cases and three checkout-expiry cases extend the payment suite; the full suites now total 105 checks.
+Blocked/full browser storage no longer breaks the cart. Payment availability falls back after eight seconds and announces its status accessibly. The server quote exposes its immutable Checkout expiry so the review page stops offering a nearly expired session; paid receipts remain readable. Six ACL security cases and three checkout-expiry cases extend the payment suite; the full suites now total 113 checks.
+
+## Production verification after installation
+
+The deployed public/private file hashes matched the reviewed manifest. All 587 HTML routes and 40 bundled assets returned HTTP 200 with matching release bytes. All 207 cards were rendered on the canonical production origin at CA$499; a live MHF4U course → cart → registration-summary check preserved its CA$499 total through reload. Disabled Checkout refused payment creation; direct success-page navigation did not forge a receipt. Payment API responses are uncached with private/no-store headers; the website-only Varnish exclusion is `/api/payments/*`. Private config/state/source paths are unavailable over HTTPS. The brand secret, protected brand files and existing `.htaccess` checksums are unchanged; Moodle was untouched.

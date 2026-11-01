@@ -39,6 +39,8 @@ if ($checks['private_config'] && $checks['config_permissions']) {
 }
 $check('valid_config', is_array($config));
 $check('checkout_disabled', is_array($config) && ($config['enabled'] ?? false) === false && ($config['cart_enabled'] ?? false) === false);
+$check('launch_approvals_disabled', is_array($config) && ($config['live_approved'] ?? false) === false
+    && ($config['pricing_approved'] ?? false) === false && ($config['self_service_approved'] ?? false) === false);
 $check('https_origin', is_array($config) && str_starts_with($config['base_url'] ?? '', 'https://') && ($config['allow_local_http'] ?? false) === false);
 $state = $config['state_dir'] ?? '';
 $check('private_state_location', is_string($state) && $state !== '' && is_string($documentRoot) && $outside($state, $documentRoot));

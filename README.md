@@ -46,7 +46,7 @@ This repository contains the public React/Vite website and its private PHP payme
 
 ## Stripe payment preparation
 
-The server-side PHP Checkout integration and `/checkout`, `/payment/success`, `/payment/cancel` pages are prepared for school-approved payment requests. Payments remain disabled by default; enrollment still does not transmit student data and Moodle is unchanged. All 207 courses use the requested CA$499/course catalogue price. Actual Nexus sandbox payments and signed webhook reconciliation have passed. Approved HTTPS staging, production credentials, owner verification, taxes/fees/refund decisions and explicit release approval remain outstanding. See [status, setup, management checklist and rollout](docs/stripe-payments.md).
+The server-side PHP Checkout integration and `/checkout`, `/payment/success`, `/payment/cancel` pages are prepared for school-approved payment requests. Payments remain disabled by default; enrollment still does not transmit student data and Moodle is unchanged. All 207 courses use the requested CA$499/course catalogue price. Actual Nexus sandbox payments and signed webhook reconciliation have passed. The approved code is deployed to Cloudways with collection disabled. Management verification, taxes/fees/refund and self-service decisions, production Stripe activation/credentials and explicit live collection approval remain outstanding. See [status, setup, management checklist and rollout](docs/stripe-payments.md).
 
 Private PHP code, dependencies, configuration and SQLite state belong outside the Cloudways web root. Vercel is a static preview/continuity target with payments unavailable. Run `npm run build` before `composer test --working-dir=server/payments`; HTTP checks exercise built PHP endpoints.
 

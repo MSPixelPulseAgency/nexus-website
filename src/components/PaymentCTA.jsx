@@ -14,7 +14,7 @@ export default function PaymentCTA({ className = "btn btn-secondary" }) {
       .then(async (response) => {
         const config = await response.json();
         if (!response.ok || config.error) throw new Error("Unavailable");
-        const ready = config.enabled === true && config.cartEnabled === true && config.mode === "test";
+        const ready = config.enabled === true && config.cartEnabled === true && ["test", "live"].includes(config.mode);
         if (!controller.signal.aborted) setAvailability(ready ? config : { enabled: false });
       })
       .catch(() => { if (!controller.signal.aborted) setAvailability({ enabled: false }); })

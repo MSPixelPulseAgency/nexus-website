@@ -135,6 +135,17 @@ echo json_encode($payments->issue('HTTP-TEST', ['MHF4U'], time()));
             check(request('checkout', {'requestId': pair['requestId']})[0] == 503, 'Paused service rejects new Checkout')
             check(request('quote')[0] == 200, 'Existing receipt stays readable while paused')
             check(request('webhook', {'id': 'evt_forged'})[0] == 400, 'Paused service still enforces webhook signatures')
+            config.update(enabled=True, mode='live', live_approved=True, pricing_approved=True, secret_key='sk_live_httpfixture', self_service_approved=False)
+            write_config()
+            check(request('config')[1]['cartEnabled'] is False, 'Live operator approval does not silently enable public cart')
+            check(request('cart', {'codes': ['MHF4U']})[0] == 503, 'Unapproved live self-service is blocked over HTTP')
+            config['self_service_approved'] = True
+            write_config()
+            status, prepared_live, _ = request('cart', {'codes': ['MHF4U']})
+            check(status == 200 and prepared_live['amount'] == 49900 and prepared_live['mode'] == 'live', 'Explicitly approved live cart uses server tuition without contacting Stripe')
+            config['enabled'] = False
+            write_config()
+            check(request('cart', {'codes': ['MHF4U']})[0] == 503, 'Global pause blocks even an approved live cart')
             config['state_dir'] = str(ROOT / 'dist/payment-state-unsafe')
             write_config()
             check(request('config')[0] == 503 and not (ROOT / 'dist/payment-state-unsafe').exists(), 'Public storage rejected before writing')
