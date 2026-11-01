@@ -3,9 +3,8 @@ import { ArrowRight, CheckCircle2, LockKeyhole, RefreshCw } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import Seo from "../components/Seo";
 import useCart from "../hooks/useCart";
+import { formatTuition } from "../data/tuition";
 import "../styles/payments.css";
-
-const money = (amount) => new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" }).format(amount / 100);
 
 async function api(endpoint, { signal, body, requestId } = {}) {
   const query = requestId ? `?request=${encodeURIComponent(requestId)}` : "";
@@ -42,7 +41,7 @@ export default function CheckoutPage({ view = "checkout" }) {
         const config = await api("config", { signal: controller.signal });
         if (cartMode) {
           if (!items.length) throw new Error("Your course cart is empty. Choose a course before checkout.");
-          if (!config.enabled || !config.cartEnabled) throw new Error("Sandbox checkout is not configured on this website yet. Your selections are saved in the course cart.");
+          if (!config.enabled || !config.cartEnabled) throw new Error("Online checkout is not available yet. Your selections are saved in the course cart. Contact Nexus to arrange the next step.");
           const quote = await api("cart", { signal: controller.signal, body: { codes: JSON.parse(cartCodes) } });
           if (!Array.isArray(quote.items) || !Number.isSafeInteger(quote.amount)) throw new Error("Payment details are unavailable. Please contact Nexus.");
           if (!controller.signal.aborted) setState({ loading: false, quote, error: "" });
@@ -99,8 +98,8 @@ export default function CheckoutPage({ view = "checkout" }) {
             {quote.mode === "test" && <p className="payment-test"><strong>Test mode</strong> — use test payment details only. No real tuition payment is taken.</p>}
             <h2>{paid ? <><CheckCircle2 size={24} aria-hidden="true" /> {quote.mode === "test" ? "Test payment received" : "Payment received"}</> : "Your tuition summary"}</h2>
             <p>Reference: <strong>{quote.reference}</strong></p>
-            <ul className="payment-items">{quote.items.map((item) => <li key={item.code}><span><strong>{item.code}</strong> · {item.label}</span><strong>{money(item.amount)}</strong></li>)}</ul>
-            <div className="payment-total"><span>Total (CAD)</span><strong>{money(quote.amount)}</strong></div>
+            <ul className="payment-items">{quote.items.map((item) => <li key={item.code}><span><strong>{item.code}</strong> · {item.label}</span><strong>{formatTuition(item.amount)}</strong></li>)}</ul>
+            <div className="payment-total"><span>Total (CAD)</span><strong>{formatTuition(quote.amount)}</strong></div>
             {paid ? <p role="status">{quote.mode === "test" ? "Your sandbox payment is confirmed. No money moved and no student was enrolled." : "Your payment is confirmed. Nexus will confirm the next enrollment steps separately."} Keep your reference for any questions.</p>
               : closed ? <p role="status">This payment request is no longer available. Contact Nexus for assistance before attempting another payment.</p>
               : view === "success" ? <div role="status"><p>We are waiting for secure confirmation. A return to this page does not confirm payment.</p><p>If you completed payment, please keep your reference and check again shortly. Contact Nexus if confirmation is delayed.</p></div>

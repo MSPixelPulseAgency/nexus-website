@@ -5,8 +5,8 @@
 - Nexus Education Private School is the merchant. MSPixelPulse is the temporary technical administrator, never a substitute legal merchant or owner.
 - The existing merchant account was retained. Its associated Nexus sandbox and the technical sign-in `admin@mspixelpulse.com` were verified in Dashboard. Stripe did not display an explicit email-verification indicator; email verification is unconfirmed.
 - The welcome flow accepted the Nexus display name, Canada, `https://nexuseps.com` and a private secondary-education description with one-time tuition payments. Optional invoicing and tax products were deselected. This is not legal/KYC verification.
-- The user explicitly requested **CAD 499.00 for every course** and selected a **sandbox test payment**. All 207 catalogue entries now use this amount on this review branch. Production prices have not been deployed. Tax treatment, additional fees, availability, refunds and live collection still require management confirmation.
-- A real Stripe sandbox Checkout payment for one MHF4U course at CAD 499.00 completed through the local cart/registration navigation. The signed `checkout.session.completed` webhook returned HTTP 200; private state and the browser receipt showed paid. No real funds moved.
+- The user explicitly requested **CAD 499.00 for every course**, displayed as **CA$499 / course**, and authorized sandbox verification. All 207 catalogue entries now use this amount on this review branch. Production prices have not been deployed. Tax treatment, additional fees, availability, refunds and live collection still require management confirmation.
+- Two real Stripe sandbox Checkout payments at CAD 499.00 were confirmed: MHF4U and a subsequent ENG4U cancellation/decline/3D Secure retry. Each signed `checkout.session.completed` webhook returned HTTP 200; private state and browser receipts showed paid. No real funds moved.
 - An existing sandbox key was used for the Nexus account check, session creation and local Stripe CLI forwarding. Test credentials were held in runtime memory, never placed in source, frontend, command arguments or configuration files. No new key, live credential or permanent Dashboard webhook destination was created.
 - Checkout preparation remains on a draft review branch. No merge, Cloudways production deployment, live activation or Moodle changes were performed.
 - Registration now displays course tuition and links the selected cart to sandbox payment, with a return link from the receipt. Student/guardian delivery remains disabled pending an approved school destination and privacy/retention arrangements. Payment does not complete registration.
@@ -124,12 +124,36 @@ Checkout and return-page reads are bound to the displayed opaque request ID as w
 ## Verification evidence
 
 - Frontend lint/build and strict Composer validation pass; Composer audit reports no known advisories.
-- 42 local payment/signature/cart-mode checks and 44 HTTP/cookie/operator/cart checks pass. No external Stripe requests or real charges are made by these suites.
+- 42 local payment/signature/cart-mode checks, 44 HTTP/cookie/operator/cart checks and 10 read-only deployment preflight checks pass. The pricing check independently validates all 207 frontend/server entries and the public/private release fingerprint. No external Stripe requests or real charges are made by these suites.
 - Browser: synthetic CA$499 request rendered; token removed from URL; keyboard navigation verified; no browser errors observed. No horizontal overflow at 320, 360, 375, 390, 412, 430, 768, 820, 1024, 1280, 1440, 1728 and 1920 pixels.
 - Direct success-page navigation shows waiting for confirmation, never a forged paid state. Payment routes have noindex metadata; success/cancel are excluded from the sitemap.
 - The enrollment reminder is suppressed on payment pages; existing styling and cart/enrollment data remain intact.
 - The catalogue still contains 207 courses and the sitemap still contains 582 URLs.
-- **External sandbox acceptance:** an actual Nexus sandbox session and successful test card payment passed with signed CLI webhook forwarding and a server-confirmed receipt. Decline/3DS tests, a permanent HTTPS staging destination, Cloudways runtime/storage/cache exclusions and live readiness remain unverified. Sandbox success is not production approval.
+- **External sandbox acceptance:** an actual Nexus sandbox session and successful test card payment passed with signed CLI webhook forwarding and a server-confirmed receipt. Cancellation/back reused the same Stripe session; an official decline card displayed its error without marking the request paid, then a 3D Secure test card completed the simulated challenge and the same session reconciled as paid through a signed webhook returning HTTP 200. The two-course cart displayed CA$998. A permanent HTTPS staging destination, authenticated Cloudways runtime/storage/cache verification and live readiness remain outstanding. Sandbox success is not production approval.
+
+## Disabled release preparation — continuation verification
+
+`npm run test:pricing` runs after the build. `public/tuition-manifest.json` contains a public, non-sensitive SHA-256 fingerprint of the generated private catalogue so a mixed public/private release can be detected. Catalogue labels, course count and all integer CAD amounts are checked against the authoritative source. The cart, registration and receipt use one display formatter; unavailable checkout shows a school-contact handoff rather than an unconditional sandbox link.
+
+The copied-config catalogue path has been corrected for the documented sibling layout. Read-only preparation checks can be run on an approved host without contacting Stripe or creating a database:
+
+```bash
+php /absolute/private/nexus-payments/preflight.php \
+  --config=/absolute/private/nexus-payments-config.php \
+  --document-root=/absolute/public_html
+```
+
+The state directory must already exist privately with mode 0700 and config must have no group/world permissions (normally 0600). The command verifies PHP/cURL/PDO SQLite, private placement, disabled checkout, HTTPS config, public endpoints, and matching public/private catalogue and config. It returns nonzero on any failed check. Its `liveLaunchApproved` value is always false: an offline preflight cannot authorize launch or prove real HTTPS/cache/webhook behavior.
+
+From a clean committed checkout, prepare an archive outside the repo:
+
+```bash
+npm run package:payments -- /absolute/new/release-directory
+```
+
+The packager builds, verifies pricing, runs payment/preflight suites and keeps `public_html/` separate from `private_html/nexus-payments/`. It moves prerendered HTML into the Cloudways `.routes/` store, validates noindex payment pages and checks public files for private payment material. It includes a source-commit/file-hash manifest and disabled installation instructions. No secrets, active config, SQLite state or deployment credentials are included. It never connects to a host, uploads files, merges a branch, changes a live setting or deploys production. Keep it as a review artifact until host/staging and management requirements are satisfied.
+
+Current public-host checks: HTTPS returned Nginx headers, and the existing PHP brand session endpoint returned JSON with private/no-store caching. The production payment config endpoint returned HTTP 404. These observations confirm PHP service and the absence of this payment installation; they do not independently authenticate the Cloudways app, SSH/SFTP access, runtime extensions or cache settings. No Nexus/Cloudways SSH profile was configured locally. Do not infer hosting eligibility, deploy, or change routing from these checks.
 
 ## What management must provide or complete
 

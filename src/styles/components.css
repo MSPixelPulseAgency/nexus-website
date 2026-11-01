@@ -4318,3 +4318,8 @@
 .registration-tuition-total { display: flex; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; border-top: 1px solid #d5dfeb; color: #09264a; }
 .registration-summary > .btn, .cart-summary > .btn { width: 100%; margin-bottom: .8rem; }
 .cart-payment-note { line-height: 1.6; }
+
+.payment-availability { padding: 1rem; margin: .8rem 0; border-radius: 12px; background: var(--ice); font-size: .9rem; }
+.payment-availability p { margin: 0 0 .7rem; }
+.registration-course { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .3rem .65rem; }
+.registration-course > span:last-child { grid-column: 2; font-size: .85rem; white-space: nowrap; }
