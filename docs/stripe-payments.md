@@ -2,23 +2,34 @@
 
 ## Current status — 2026-11-01
 
-- The user confirmed **Nexus Education Private School is the merchant**. MSPixelPulse is the technical administrator, not the legal merchant or owner.
-- Requested temporary technical login: `admin@mspixelpulse.com`. Its use on the open account has **not** been verified.
-- The existing Chrome tab is Stripe **test mode**, at the initial business-name/country onboarding screen. Browser input did not reliably apply; no saved registration changes or legal details were verified.
-- The user supplied **499**, interpreted as **CA$499 per course for provisional testing only**. No production fee schedule, tax treatment, domestic/international differences, additional fees or refund policy has been verified. No public catalogue prices were changed.
-- No actual API keys or webhook signing secrets have been obtained or configured. No Dashboard event destination has been registered.
-- The PHP integration and payment pages are prepared on a separate review branch. Production deployment and live payments remain unauthorized.
-- The existing enrollment form still does not transmit student data. Moodle is untouched. No real charge, refund, student notification or ownership change was performed.
+- Nexus Education Private School is the merchant. MSPixelPulse is the temporary technical administrator, never a substitute legal merchant or owner.
+- The existing merchant account was retained. Its associated Nexus sandbox and the technical sign-in `admin@mspixelpulse.com` were verified in Dashboard. Stripe did not display an explicit email-verification indicator; email verification is unconfirmed.
+- The welcome flow accepted the Nexus display name, Canada, `https://nexuseps.com` and a private secondary-education description with one-time tuition payments. Optional invoicing and tax products were deselected. This is not legal/KYC verification.
+- The user explicitly requested **CAD 499.00 for every course** and selected a **sandbox test payment**. All 207 catalogue entries now use this amount on this review branch. Production prices have not been deployed. Tax treatment, additional fees, availability, refunds and live collection still require management confirmation.
+- A real Stripe sandbox Checkout payment for one MHF4U course at CAD 499.00 completed through the local cart/registration navigation. The signed `checkout.session.completed` webhook returned HTTP 200; private state and the browser receipt showed paid. No real funds moved.
+- An existing sandbox key was used for the Nexus account check, session creation and local Stripe CLI forwarding. Test credentials were held in runtime memory, never placed in source, frontend, command arguments or configuration files. No new key, live credential or permanent Dashboard webhook destination was created.
+- Checkout preparation remains on a draft review branch. No merge, Cloudways production deployment, live activation or Moodle changes were performed.
+- Registration now displays course tuition and links the selected cart to sandbox payment, with a return link from the receipt. Student/guardian delivery remains disabled pending an approved school destination and privacy/retention arrangements. Payment does not complete registration.
 
 ## Payment and enrollment flow
 
-The course cart contains 207 catalogue records, without confirmed availability or pricing. The registration form intentionally remains local until the school approves privacy, retention, recipient and delivery arrangements. Do not silently turn that form into a payment or student-record endpoint.
+`src/data/tuition.json` is the shared tuition source in integer CAD cents. The build generates the private `server/payments/catalog-prices.json` from the same 207-course catalogue. Deploy both the public build and matching private application; never accept a browser-provided amount, label or eligibility claim.
 
-A trusted school operator first reviews availability and eligibility outside this integration. They issue an **approved payment request** with a non-personal reference and approved course codes. The server snapshots approved amounts; the payer cannot supply totals or change courses. Link issuance is a private CLI operation, never a public endpoint. A unique enrollment reference prevents accidental duplicate issuance.
+### Sandbox self-service cart
 
-The confidential link contains a high-entropy token in its URL fragment. The page exchanges it for an HttpOnly, SameSite cookie, removes the fragment and keeps no token in browser storage. Anyone receiving the link can view its course/amount details. The school must map the reference to its enrollment record in its existing approved system. Never put names, emails, dates of birth, guardian information or academic records in references, Stripe metadata or logs.
+Cart → registration (optional preparation) → `/checkout?cart=1` → Stripe-hosted Checkout → signed webhook → confirmed test receipt.
 
-Only Stripe-hosted Checkout collects payer/card information. Cards and eligible card wallets are supported, subject to Stripe/device eligibility. No Interac e-Transfer, bank debit, installments or subscriptions are configured. Payment does not automatically enroll students, grant Moodle access or send confirmation emails.
+`cart.php` accepts only a JSON list of 1–12 distinct course codes. The server validates catalogue membership and looks up its configured prices. Same-origin JSON checks, private HttpOnly/SameSite cookies, IP rate limits and per-session cart fingerprints prevent tampering and reuse the same request for repeated clicks. A repeat of a paid cart shows the existing paid request; it never silently charges again. Changing course order does not create a new request. Courses in local storage are normalized against the current catalogue on load.
+
+Self-service requires both `enabled=true` and `cart_enabled=true`, and is hard-disabled outside `mode=test`. Do not remove the live guard as part of deployment. Live self-service needs a separately approved enrollment/availability, privacy, fee/tax and refund workflow.
+
+Only course identifiers, tuition and opaque references enter the payment service. No student, guardian or academic fields enter Stripe metadata. Stripe-hosted Checkout collects the synthetic test payer/card details. Do not use real student or payment data in sandbox testing.
+
+### Operator-issued requests
+
+The existing private CLI flow is also retained: a trusted school operator reviews availability/eligibility and issues a request with approved codes and a non-personal reference. A high-entropy fragment token exchanges for an HttpOnly access cookie; the page removes the token from the visible URL. The CLI saves confidential links privately rather than printing or emailing them.
+
+Stripe now manages eligible methods through Dashboard settings; the integration omits the removed `payment_method_types` parameter. Before live collection, management must review allowed methods, including any default financing options. No subscriptions or automatic Moodle access are implemented. The Checkout request uses the `nexus-checkout-v2-` idempotency namespace; this is a pre-release change, not a migration of an operating production payment service. Never change this namespace for deployed/in-flight requests without reconciliation.
 
 ## Runtime and private installation
 
@@ -52,16 +63,16 @@ Use the host's secret manager/environment editor. Never put secret values in cha
 
 Private config requirements:
 
-- Start with `enabled=false`, `mode=test`, `live_approved=false`, `pricing_approved=false`.
+- Start with `enabled=false`, `cart_enabled=false`, `mode=test`, `live_approved=false`, `pricing_approved=false`. Enable cart only in a verified sandbox.
 - `base_url`: exact staging HTTPS origin without trailing slash; `allow_local_http=false` on hosted systems.
 - `expected_account_id`: independently confirm Nexus's account. The credential's account is checked before creating/reconciling sessions.
-- `prices`: explicit approved course-code entries with integer CAD cents and a course label. A provisional sandbox entry may be `'MHF4U' => ['amount' => 49900, 'label' => 'Advanced Functions']`. Do not assume every course is available or every student has the same price.
+- `prices`: the generated catalogue map supplies CAD 499.00 per course for this user-requested sandbox flow. Catalogue membership is not confirmation of course availability or student eligibility. Operator requests may use a narrower reviewed price map.
 - Production entries must be final **tax-inclusive totals approved by management**. This implementation does not calculate taxes, fees or eligibility. Keep live mode disabled while those are unresolved.
 
 ## Stripe sandbox acceptance
 
 1. Reach the existing test Dashboard. Confirm the technical login. Nexus's public display name and Canada are not proof of legal entity, registration or address. Stop at agreements, KYC, ownership and banking for the authorized owner.
-2. Securely configure the Nexus test credentials on staging. This remains blocked until authenticated Dashboard access and secure credential entry are available.
+2. Securely configure Nexus test credentials on an approved staging host. Local account verification, session creation and signed CLI forwarding have passed; persistent staging configuration remains outstanding.
 3. Deploy the reviewed private app and public build to an **approved HTTPS staging application**. A static Vercel preview checks UI only. No Cloudways staging app was created in this task.
 4. In Stripe Workbench, create a **sandbox snapshot webhook destination for this account** at `https://<approved-staging-origin>/api/payments/webhook.php`. Select `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` and `checkout.session.expired`. Store its signing secret server-side. Never register the unready production endpoint.
 5. Alternatively, Stripe CLI can forward events to `http://127.0.0.1:8787/api/payments/webhook.php`. Its listener signing secret differs from a Dashboard destination secret; use the matching secret.
@@ -113,12 +124,12 @@ Checkout and return-page reads are bound to the displayed opaque request ID as w
 ## Verification evidence
 
 - Frontend lint/build and strict Composer validation pass; Composer audit reports no known advisories.
-- 38 local payment/signature checks and 30 HTTP/cookie/operator checks pass. No external Stripe requests or real charges are made by these suites.
+- 42 local payment/signature/cart-mode checks and 44 HTTP/cookie/operator/cart checks pass. No external Stripe requests or real charges are made by these suites.
 - Browser: synthetic CA$499 request rendered; token removed from URL; keyboard navigation verified; no browser errors observed. No horizontal overflow at 320, 360, 375, 390, 412, 430, 768, 820, 1024, 1280, 1440, 1728 and 1920 pixels.
 - Direct success-page navigation shows waiting for confirmation, never a forged paid state. Payment routes have noindex metadata; success/cancel are excluded from the sitemap.
 - The enrollment reminder is suppressed on payment pages; existing styling and cart/enrollment data remain intact.
 - The catalogue still contains 207 courses and the sitemap still contains 582 URLs.
-- **External boundary blocked:** actual Nexus credentials, real Stripe Checkout/decline/authentication tests, registered webhook delivery, Cloudways runtime/staging and live readiness are not verified. Fixture success is not production approval.
+- **External sandbox acceptance:** an actual Nexus sandbox session and successful test card payment passed with signed CLI webhook forwarding and a server-confirmed receipt. Decline/3DS tests, a permanent HTTPS staging destination, Cloudways runtime/storage/cache exclusions and live readiness remain unverified. Sandbox success is not production approval.
 
 ## What management must provide or complete
 
@@ -126,7 +137,7 @@ Checkout and return-page reads are bound to the displayed opaque request ID as w
 - Authorized representative personally completes identity/KYC, beneficial owners/controllers, requested documents and agreements. Never substitute MSPixelPulse identity.
 - School payout bank details, entered directly into Stripe by management. Do not send banking or ID documents in chat.
 - Official owner's email and account control. Management handles invitations/ownership transfer, confirms acceptance and assigns only the agreed technical role to MSPixelPulse. No invitations or ownership transfer were performed here.
-- Confirm CA$499 currency/basis, course availability/eligibility, domestic/international pricing, taxes/fees, refunds/cancellations, statement descriptor, support details and receipt arrangements.
+- The user confirmed catalogue tuition of CAD 499.00 for every course. Management must still confirm availability/eligibility, tax treatment, extra fees, refund/cancellation terms, statement descriptor, support details and receipt arrangements before live collection.
 - Approve privacy/retention, review staging evidence, then explicitly authorize production deployment and live payments.
 
 ## Production rollout — approval required

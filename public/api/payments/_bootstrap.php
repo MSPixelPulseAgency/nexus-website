@@ -25,6 +25,14 @@ set_exception_handler(static function (Throwable $error): never {
     }
     // Never log exception messages, raw events, request bodies or Stripe keys.
     error_log('Nexus payment request failed: ' . get_class($error));
+    if ($error instanceof \Stripe\Exception\ApiErrorException) {
+        // Machine-readable codes and parameter names support safe diagnosis.
+        $detail = $error->getError();
+        foreach (['code', 'param', 'type'] as $field) {
+            $value = $detail->{$field} ?? '';
+            if (is_string($value) && preg_match('/^[A-Za-z0-9_\[\].-]{1,100}$/D', $value)) error_log('Stripe ' . $field . ': ' . $value);
+        }
+    }
     payment_json(503, ['error' => 'Payment confirmation is temporarily unavailable. Please retry or contact Nexus.']);
 });
 
@@ -70,12 +78,14 @@ function payment_input(): array
     $raw = file_get_contents('php://input', false, null, 0, 8193);
     if ($raw === false || strlen($raw) > 8192) throw new PaymentError(413, 'Request too large.');
     try {
-        $body = json_decode($raw, true, 16, JSON_THROW_ON_ERROR);
+        // Preserve JSON object/array types so a numeric-key object cannot pose
+        // as a cart list. Only the top-level request object becomes an array.
+        $body = json_decode($raw, false, 16, JSON_THROW_ON_ERROR);
     } catch (JsonException) {
         throw new PaymentError(400, 'Invalid request.');
     }
-    if (!is_array($body)) throw new PaymentError(400, 'Invalid request.');
-    return $body;
+    if (!$body instanceof stdClass) throw new PaymentError(400, 'Invalid request.');
+    return (array) $body;
 }
 
 function payment_session(): void

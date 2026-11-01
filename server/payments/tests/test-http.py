@@ -30,11 +30,11 @@ with tempfile.TemporaryDirectory(prefix='nexus-payment-http-') as temp:
         port = probe.getsockname()[1]
     base = f'http://127.0.0.1:{port}'
     config = {
-        'enabled': True, 'mode': 'test', 'live_approved': False, 'pricing_approved': False,
+        'enabled': True, 'cart_enabled': True, 'mode': 'test', 'live_approved': False, 'pricing_approved': False,
         'base_url': base, 'allow_local_http': True, 'expected_account_id': 'acct_fixture',
         'secret_key': 'sk_test_httpfixture', 'webhook_secret': 'whsec_http_fixture',
         'state_dir': str(private / 'state'),
-        'prices': {'MHF4U': {'amount': 49900, 'label': 'Advanced Functions'}},
+        'prices': {'MHF4U': {'amount': 49900, 'label': 'Advanced Functions'}, 'ENG4U': {'amount': 49900, 'label': 'English'}},
     }
     config_file = private / 'config.php'
     def write_config():
@@ -79,7 +79,7 @@ echo json_encode($payments->issue('HTTP-TEST', ['MHF4U'], time()));
                 except OSError:
                     time.sleep(.03)
             status, data, headers = request('config')
-            check(status == 200 and data == {'enabled': True, 'mode': 'test'}, 'Config discloses no credentials')
+            check(status == 200 and data == {'enabled': True, 'cartEnabled': True, 'mode': 'test'}, 'Config discloses no credentials')
             check('no-store' in headers.get('Cache-Control', ''), 'Payment responses cannot be cached')
             check(request('quote')[0] == 403, 'Receipt requires an authorized session')
             check(request('access', {'token': token}, origin='https://other.example')[0] == 403, 'Cross-origin authorization blocked')
@@ -113,10 +113,26 @@ echo json_encode($payments->issue('HTTP-TEST', ['MHF4U'], time()));
             check(rejected.returncode == 1 and not outside.exists(), 'CLI rejects output outside its private link directory')
             reported = subprocess.check_output(['php', str(APP / 'manage.php'), 'report'], env=environment)
             check(b'CLI-TEST-ONLY' in reported and b'token' not in reported and b'checkout_url' not in reported, 'Operator report excludes link credentials')
+            check(request('cart', {'codes': ['MHF4U'], 'amount': 1})[0] == 400, 'Cart rejects client prices')
+            check(request('cart', {'codes': ['MHF4U'], 'email': 'student@example.com'})[0] == 400, 'Cart rejects personal data')
+            check(request('cart', {'codes': ['MHF4U']}, origin='https://other.example')[0] == 403, 'Cross-origin cart blocked')
+            for invalid, expected in [([], 400), (['MHF4U', 'MHF4U'], 400), ([{}], 400), (['ZZZ4U'], 422), ({'0': 'MHF4U'}, 400)]:
+                check(request('cart', {'codes': invalid})[0] == expected, 'Invalid cart selection rejected')
+            status, cart, headers = request('cart', {'codes': ['MHF4U']})
+            check(status == 200 and cart['amount'] == 49900 and cart['mode'] == 'test', 'Single-course cart quotes CAD 499')
+            check(request('cart', {'codes': ['MHF4U']})[1]['requestId'] == cart['requestId'], 'Repeated cart request reuses existing order')
+            status, pair, _ = request('cart', {'codes': ['ENG4U', 'MHF4U']})
+            check(status == 200 and pair['amount'] == 99800, 'Two-course cart quotes CAD 998')
+            check(request('cart', {'codes': ['MHF4U', 'ENG4U']})[1]['requestId'] == pair['requestId'], 'Reordered cart reuses existing order')
+            check(request('quote', query={'request': cart['requestId']})[0] == 409, 'Old tab cannot display a different cart order')
+            config['cart_enabled'] = False
+            write_config()
+            check(request('cart', {'codes': ['MHF4U']})[0] == 503, 'Cart can be paused separately')
+            config['cart_enabled'] = True
             config['enabled'] = False
             write_config()
             check(request('access', {'token': token})[0] == 503, 'Paused service rejects new access')
-            check(request('checkout', {'requestId': quote['requestId']})[0] == 503, 'Paused service rejects new Checkout')
+            check(request('checkout', {'requestId': pair['requestId']})[0] == 503, 'Paused service rejects new Checkout')
             check(request('quote')[0] == 200, 'Existing receipt stays readable while paused')
             check(request('webhook', {'id': 'evt_forged'})[0] == 400, 'Paused service still enforces webhook signatures')
             config['state_dir'] = str(ROOT / 'dist/payment-state-unsafe')

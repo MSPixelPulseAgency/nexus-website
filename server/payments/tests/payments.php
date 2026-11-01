@@ -68,6 +68,12 @@ try {
     }
     $disabled = new Payments(array_replace($config, ['enabled' => false]), $gateway);
     $liveStore = new Payments(array_replace($config, ['enabled' => false, 'mode' => 'live', 'live_approved' => true, 'pricing_approved' => true]), $gateway);
+    rejects(static fn () => $payments->requireCartEnabled(), 503);
+    $cartReady = new Payments(array_replace($config, ['cart_enabled' => true]), $gateway);
+    $cartReady->requireCartEnabled();
+    check(true, 'Configured sandbox permits cart requests');
+    $liveCart = new Payments(array_replace($config, ['cart_enabled' => true, 'mode' => 'live', 'secret_key' => 'sk_live_unitfixture', 'live_approved' => true, 'pricing_approved' => true]), $gateway);
+    rejects(static fn () => $liveCart->requireCartEnabled(), 503);
     rejects(static fn () => $disabled->issue('TEST-ONLY', ['MHF4U'], 1000), 503);
     rejects(static fn () => $payments->issue('TEST-ONLY', ['UNKNOWN'], 1000), 422);
     rejects(static fn () => $payments->issue('TEST-ONLY', ['MHF4U', 'MHF4U'], 1000), 400);
@@ -88,6 +94,7 @@ try {
     rejects(static fn () => $payments->checkout($id, 1002));
     check($payments->quote($id)['status'] === 'approved', 'Network error does not mark paid');
     $url = $payments->checkout($id, 1003);
+    check(!isset($gateway->calls[1]['params']['payment_method_types']), 'Current Stripe API uses Dashboard-managed payment methods');
     check($gateway->calls[0] === $gateway->calls[1], 'Network retry uses identical parameters and idempotency key');
     check($payments->checkout($id, 1004) === $url && count($gateway->calls) === 2, 'Repeated checkout reuses the existing session');
     check($payments->quote($id)['status'] === 'pending', 'Checkout creation is pending, not paid');
@@ -144,7 +151,7 @@ try {
     check(!str_contains(json_encode($payments->quote($id)), $token), 'Public quote contains no bearer token');
     echo "PASS: {$assertions} payment checks; no external Stripe calls or real charges.\n";
 } finally {
-    unset($payments, $disabled, $liveStore);
+    unset($payments, $disabled, $liveStore, $cartReady, $liveCart);
     if (is_dir($dir)) {
         foreach (glob($dir . '/*') as $file) unlink($file);
         rmdir($dir);

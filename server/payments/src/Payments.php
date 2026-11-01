@@ -104,6 +104,27 @@ final class Payments
         }
     }
 
+    public function requireCartEnabled(): void
+    {
+        $this->requireEnabled();
+        // Public self-service is sandbox-only until Nexus approves enrollment,
+        // availability, tax treatment, refunds and live collection separately.
+        if (($this->config['cart_enabled'] ?? false) !== true || $this->config['mode'] !== 'test') {
+            throw new PaymentError(503, 'Course checkout is not available yet. Contact Nexus to continue.');
+        }
+    }
+
+    public function validateCodes(array $codes): void
+    {
+        if (!$codes || count($codes) > 12) throw new PaymentError(400, 'Select between 1 and 12 different courses.');
+        foreach ($codes as $code) {
+            if (!is_string($code) || !preg_match('/^[A-Z0-9]{5,8}$/D', $code)) {
+                throw new PaymentError(400, 'Choose valid course codes from the Nexus catalogue.');
+            }
+        }
+        if (count(array_unique($codes)) !== count($codes)) throw new PaymentError(400, 'Select each course only once.');
+    }
+
     private function one(string $sql, array $values): array|false
     {
         $query = $this->db->prepare($sql);
@@ -121,9 +142,10 @@ final class Payments
     public function issue(string $reference, array $codes, int $now): array
     {
         $this->requireEnabled();
-        if (!preg_match('/^[A-Z0-9-]{6,40}$/D', $reference) || !$codes || count($codes) > 12 || count(array_unique($codes)) !== count($codes)) {
+        if (!preg_match('/^[A-Z0-9-]{6,40}$/D', $reference)) {
             throw new PaymentError(400, 'Use a non-personal reference and 1–12 distinct approved course codes.');
         }
+        $this->validateCodes($codes);
         $items = [];
         $amount = 0;
         foreach ($codes as $code) {
@@ -203,7 +225,8 @@ final class Payments
             }
             $items = json_decode($request['items'], true, 512, JSON_THROW_ON_ERROR);
             $session = $this->gateway->create([
-                'mode' => 'payment', 'payment_method_types' => ['card'],
+                // Current Stripe API selects methods from Dashboard settings.
+                'mode' => 'payment',
                 'adaptive_pricing' => ['enabled' => false], 'automatic_tax' => ['enabled' => false],
                 'allow_promotion_codes' => false,
                 'line_items' => array_map(static fn (array $item): array => [
@@ -215,7 +238,7 @@ final class Payments
                 'success_url' => $this->config['base_url'] . '/payment/success?request=' . $id,
                 'cancel_url' => $this->config['base_url'] . '/payment/cancel?request=' . $id,
                 'expires_at' => (int) $request['checkout_expires'],
-            ], 'nexus-request-' . $id);
+            ], 'nexus-checkout-v2-' . $id);
             $this->validateSession($session, $request);
             $url = $session['url'] ?? '';
             if (!str_starts_with($url, 'https://checkout.stripe.com/')) throw new RuntimeException('Invalid Checkout destination.');

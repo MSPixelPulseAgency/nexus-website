@@ -4311,3 +4311,10 @@
 .not-found p {
   max-width: 580px;
 }
+
+.course-tuition { color: var(--navy, #09264a); }
+.course-tuition strong { font-size: 1.12rem; }
+.course-tuition span, .cart-payment-note { font-size: .88rem; }
+.registration-tuition-total { display: flex; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; border-top: 1px solid #d5dfeb; color: #09264a; }
+.registration-summary > .btn, .cart-summary > .btn { width: 100%; margin-bottom: .8rem; }
+.cart-payment-note { line-height: 1.6; }

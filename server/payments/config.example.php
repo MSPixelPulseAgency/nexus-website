@@ -2,6 +2,7 @@
 // EXAMPLE ONLY. Install outside public_html; never put real secrets in this file.
 return [
     'enabled' => false,
+    'cart_enabled' => false, // Enable only in a configured Nexus sandbox.
     'mode' => 'test',
     'live_approved' => false,
     'pricing_approved' => false,
@@ -11,10 +12,7 @@ return [
     'secret_key' => getenv('NEXUS_STRIPE_SECRET_KEY') ?: '',
     'webhook_secret' => getenv('NEXUS_STRIPE_WEBHOOK_SECRET') ?: '',
     'state_dir' => __DIR__ . '/private/state',
-    // Provisional amount supplied by the user: CA$499 per course. For TESTS ONLY
-    // until management confirms taxes, fees, pricing differences and refunds.
-    // Add only courses approved for this payment request, for example:
-    // 'MHF4U' => ['amount' => 49900, 'label' => 'Advanced Functions'],
-    // Production entries must be management-approved tax-inclusive CAD totals.
-    'prices' => [],
+    // User-requested catalogue tuition: CA$499 for every course. Generated at build.
+    // Live collection still requires management-approved tax treatment and terms.
+    'prices' => json_decode(file_get_contents(__DIR__ . '/catalog-prices.json'), true, 512, JSON_THROW_ON_ERROR),
 ];
