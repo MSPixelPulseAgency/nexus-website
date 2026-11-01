@@ -59,9 +59,13 @@ for (const route of ["checkout", "payment/success", "payment/cancel"]) {
 }
 if (files(publicRoot).some((path) => /(?:\.sqlite(?:-|$)|\/vendor\/stripe\/|\/server\/payments\/|nexus-payments-config)/.test(path))) throw new Error("Private payment material found in public release.");
 const hashes = Object.fromEntries(files(output).map((path) => [relative(output, path), createHash("sha256").update(readFileSync(path)).digest("hex")]));
+if (Object.keys(hashes).some((path) => /(^|\/)(\._[^/]*|\.DS_Store)(\/|$)/.test(path))) throw new Error("macOS metadata found in release inputs.");
 writeFileSync(join(output, "release-manifest.json"), JSON.stringify({ commit, checkoutEnabled: false, liveLaunchApproved: false,
   pricing: JSON.parse(readFileSync(join(publicRoot, "tuition-manifest.json"))), files: hashes }, null, 2) + "\n");
 writeFileSync(join(output, "INSTALL.md"), `# Disabled Nexus payment release\n\nSource commit: ${commit}\n\nThis is an artifact for review, not an authorized deployment or live launch. Public HTML and private PHP code are separated. No config, credentials or payment state are included.\n\n1. Verify the Cloudways application, PHP/cURL/PDO SQLite runtime, backups and staging approval. Keep Moodle separate.\n2. Stage public_html/ and private_html/nexus-payments/ on the approved host. Configure PHP entry points and exclude /api/payments/* from every cache.\n3. Copy config.example.php to the separate private nexus-payments-config.php, set private state_dir, HTTPS base_url and verified account identity. Keep enabled=false, cart_enabled=false, live_approved=false and pricing_approved=false. Enter secrets through the host secret mechanism only.\n4. Run the private preflight.php with --config=<absolute-private-config> --document-root=<absolute-public-root>. A pass only verifies disabled preparation.\n5. Verify HTTPS route metadata, private-file protection, sandbox webhook delivery and the management checklist in docs/stripe-payments.md from the source repository.\n6. Keep live collection disabled until management requirements and explicit launch approval are complete. Preserve database and webhook reconciliation during rollback.\n`);
-execFileSync("tar", ["-czf", output + ".tar.gz", "-C", output, "."], { stdio: "inherit" });
+// BSD tar otherwise adds AppleDouble entries for extended attributes on macOS.
+execFileSync("tar", ["-czf", output + ".tar.gz", "-C", output, "."], { stdio: "inherit", env: { ...process.env, COPYFILE_DISABLE: "1" } });
+const entries = execFileSync("tar", ["-tzf", output + ".tar.gz"], { encoding: "utf8" }).split("\n");
+if (entries.some((path) => /(^|\/)(\._[^/]*|\.DS_Store)(\/|$)/.test(path))) throw new Error("macOS metadata found in release archive.");
 chmodSync(output + ".tar.gz", 0o600);
 console.log(`Prepared disabled Cloudways release for ${commit}: ${output}.tar.gz`);
