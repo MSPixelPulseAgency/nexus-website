@@ -24,6 +24,10 @@ const renderMeta = ({ route, title, description }) => {
   const imageAlt = `${title} — ${brand.name}`;
   let html = sourceHtml.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(title)}</title>`);
   html = replaceMeta(html, "name", "description", description);
+  if (route === "/checkout" || route.startsWith("/payment/")) {
+    html = html.replace(/<meta name="robots"[^>]*>/, '<meta name="robots" content="noindex, nofollow, noarchive" />');
+    if (!html.includes('content="noindex, nofollow, noarchive"')) html = html.replace("</head>", '<meta name="robots" content="noindex, nofollow, noarchive" /></head>');
+  }
   html = replaceMeta(html, "property", "og:title", title);
   html = replaceMeta(html, "property", "og:description", description);
   html = replaceMeta(html, "property", "og:url", url);

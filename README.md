@@ -43,3 +43,9 @@ The registration page validates fields locally but does not transmit or store se
 The public catalogue is generated from a read-only export of the Nexus Moodle catalogue. A record is not a promise of active availability; public course pages consistently ask visitors to confirm availability and eligibility.
 
 This repository is only for the public React/Vite website. Do not modify or replace the separate Nexus Moodle LMS repository from this project.
+
+## Stripe payment preparation
+
+The server-side PHP Checkout integration and `/checkout`, `/payment/success`, `/payment/cancel` pages are prepared for school-approved payment requests. Payments remain disabled by default; enrollment still does not transmit student data and Moodle is unchanged. CA$499/course is provisional testing input, pending taxes, fees, availability and refund approval. Real Stripe sandbox testing, credentials, owner verification and release approval remain required. See [status, setup, management checklist and rollout](docs/stripe-payments.md).
+
+Private PHP code, dependencies, configuration and SQLite state belong outside the Cloudways web root. Vercel is a static preview/continuity target with payments unavailable. Run `npm run build` before `composer test --working-dir=server/payments`; HTTP checks exercise built PHP endpoints.

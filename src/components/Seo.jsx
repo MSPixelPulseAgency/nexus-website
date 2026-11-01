@@ -15,7 +15,7 @@ function removeMeta(selector) {
   document.head.querySelector(selector)?.remove();
 }
 
-export default function Seo({ title, description, image, structuredData }) {
+export default function Seo({ title, description, image, structuredData, noIndex = false }) {
   const { pathname } = useLocation();
   const fallback = staticMeta[pathname] || staticMeta["/"];
   const resolvedTitle = title || fallback[0];
@@ -26,6 +26,7 @@ export default function Seo({ title, description, image, structuredData }) {
   const socialImageAlt = `${resolvedTitle} — ${brand.name}`;
 
   useEffect(() => {
+    if (noIndex) setMeta('meta[name="robots"]', { name: "robots", content: "noindex, nofollow, noarchive" });
     document.title = resolvedTitle;
     setMeta('meta[name="description"]', { name: "description", content: resolvedDescription });
     setMeta('meta[property="og:title"]', { property: "og:title", content: resolvedTitle });
@@ -67,7 +68,10 @@ export default function Seo({ title, description, image, structuredData }) {
       script.textContent = JSON.stringify(schema).replace(/</g, "\\u003c");
       document.head.appendChild(script);
     });
-    return () => document.head.querySelectorAll('script[data-nexus-schema="true"]').forEach((script) => script.remove());
-  }, [canonicalUrl, resolvedDescription, resolvedTitle, socialImage, socialImageAlt, structuredData, usesDefaultSocialImage]);
+    return () => {
+      document.head.querySelectorAll('script[data-nexus-schema="true"]').forEach((script) => script.remove());
+      if (noIndex) removeMeta('meta[name="robots"]');
+    };
+  }, [canonicalUrl, resolvedDescription, resolvedTitle, socialImage, socialImageAlt, structuredData, usesDefaultSocialImage, noIndex]);
   return null;
 }
