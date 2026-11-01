@@ -1,0 +1,830 @@
+{
+  "ADA1O": {
+    "amount": 49900,
+    "label": "Drama"
+  },
+  "ADA2O": {
+    "amount": 49900,
+    "label": "Drama"
+  },
+  "ADA3M": {
+    "amount": 49900,
+    "label": "Drama"
+  },
+  "ADA3O": {
+    "amount": 49900,
+    "label": "Drama"
+  },
+  "ADA4E": {
+    "amount": 49900,
+    "label": "Drama"
+  },
+  "ADA4M": {
+    "amount": 49900,
+    "label": "Drama"
+  },
+  "AEA3O": {
+    "amount": 49900,
+    "label": "Exploring and Creating in the Arts"
+  },
+  "AEA4O": {
+    "amount": 49900,
+    "label": "Exploring and Creating in the Arts"
+  },
+  "ALC1O": {
+    "amount": 49900,
+    "label": "Integrated Arts"
+  },
+  "ALC2O": {
+    "amount": 49900,
+    "label": "Integrated Arts"
+  },
+  "AMU1O": {
+    "amount": 49900,
+    "label": "Music"
+  },
+  "AMU2O": {
+    "amount": 49900,
+    "label": "Music"
+  },
+  "AMU3M": {
+    "amount": 49900,
+    "label": "Music"
+  },
+  "AMU3O": {
+    "amount": 49900,
+    "label": "Music"
+  },
+  "AMU4E": {
+    "amount": 49900,
+    "label": "Music"
+  },
+  "AMU4M": {
+    "amount": 49900,
+    "label": "Music"
+  },
+  "ASM2O": {
+    "amount": 49900,
+    "label": "Media Arts"
+  },
+  "ASM3M": {
+    "amount": 49900,
+    "label": "Media Arts"
+  },
+  "ASM3O": {
+    "amount": 49900,
+    "label": "Media Arts"
+  },
+  "ASM4E": {
+    "amount": 49900,
+    "label": "Media Arts"
+  },
+  "ASM4M": {
+    "amount": 49900,
+    "label": "Media Arts"
+  },
+  "ATC1O": {
+    "amount": 49900,
+    "label": "Dance"
+  },
+  "ATC2O": {
+    "amount": 49900,
+    "label": "Dance"
+  },
+  "ATC3M": {
+    "amount": 49900,
+    "label": "Dance"
+  },
+  "ATC3O": {
+    "amount": 49900,
+    "label": "Dance"
+  },
+  "ATC4E": {
+    "amount": 49900,
+    "label": "Dance"
+  },
+  "ATC4M": {
+    "amount": 49900,
+    "label": "Dance"
+  },
+  "AVI1O": {
+    "amount": 49900,
+    "label": "Visual Arts"
+  },
+  "AVI2O": {
+    "amount": 49900,
+    "label": "Visual Arts"
+  },
+  "AVI3M": {
+    "amount": 49900,
+    "label": "Visual Arts"
+  },
+  "AVI3O": {
+    "amount": 49900,
+    "label": "Visual Arts"
+  },
+  "AVI4E": {
+    "amount": 49900,
+    "label": "Visual Arts"
+  },
+  "AVI4M": {
+    "amount": 49900,
+    "label": "Visual Arts"
+  },
+  "BAF3M": {
+    "amount": 49900,
+    "label": "Financial Accounting Fundamentals"
+  },
+  "BAI3E": {
+    "amount": 49900,
+    "label": "Accounting Essentials"
+  },
+  "BAT4M": {
+    "amount": 49900,
+    "label": "Financial Accounting Principles"
+  },
+  "BBB4M": {
+    "amount": 49900,
+    "label": "International Business Fundamentals"
+  },
+  "BDI3C": {
+    "amount": 49900,
+    "label": "Entrepreneurship: The Venture"
+  },
+  "BDV4C": {
+    "amount": 49900,
+    "label": "Venture Planning in an Electronic Age"
+  },
+  "BEM1O": {
+    "amount": 49900,
+    "label": "Building the Entrepreneurial Mindset"
+  },
+  "BEP2O": {
+    "amount": 49900,
+    "label": "Launching and Leading a Business"
+  },
+  "BMI3C": {
+    "amount": 49900,
+    "label": "Marketing: Goods, Services, Events"
+  },
+  "BMX3E": {
+    "amount": 49900,
+    "label": "Marketing: Retail and Service"
+  },
+  "BOH4M": {
+    "amount": 49900,
+    "label": "Business Leadership: Management Fundamentals"
+  },
+  "CGC1W": {
+    "amount": 49900,
+    "label": "Exploring Canadian Geography"
+  },
+  "CGD3M": {
+    "amount": 49900,
+    "label": "Regional Geography"
+  },
+  "CGF3M": {
+    "amount": 49900,
+    "label": "Forces of Nature: Physical Processes and Disasters"
+  },
+  "CGG3O": {
+    "amount": 49900,
+    "label": "Travel and Tourism: A Geographic Perspective"
+  },
+  "CGO4M": {
+    "amount": 49900,
+    "label": "Spatial Technologies in Action"
+  },
+  "CGR4E": {
+    "amount": 49900,
+    "label": "Living in a Sustainable World"
+  },
+  "CGR4M": {
+    "amount": 49900,
+    "label": "The Environment and Resource Management"
+  },
+  "CGT3O": {
+    "amount": 49900,
+    "label": "Introduction to Spatial Technologies"
+  },
+  "CGU4M": {
+    "amount": 49900,
+    "label": "World Geography: Urban Patterns and Population Issues"
+  },
+  "CGW4C": {
+    "amount": 49900,
+    "label": "World Issues: A Geographic Analysis"
+  },
+  "CGW4U": {
+    "amount": 49900,
+    "label": "World Issues: A Geographic Analysis"
+  },
+  "CHA3U": {
+    "amount": 49900,
+    "label": "American History"
+  },
+  "CHC2D": {
+    "amount": 49900,
+    "label": "Canadian History since World War I"
+  },
+  "CHC2P": {
+    "amount": 49900,
+    "label": "Canadian History since World War I"
+  },
+  "CHE3O": {
+    "amount": 49900,
+    "label": "Origins and Citizenship: The History of a Canadian Ethnic Group"
+  },
+  "CHI4U": {
+    "amount": 49900,
+    "label": "Canada: History Identity and Culture"
+  },
+  "CHM4E": {
+    "amount": 49900,
+    "label": "Adventures in World History"
+  },
+  "CHT3O": {
+    "amount": 49900,
+    "label": "World History since 1900: Global and Regional Interactions"
+  },
+  "CHV2O": {
+    "amount": 49900,
+    "label": "Civics and Citizenship"
+  },
+  "CHW3M": {
+    "amount": 49900,
+    "label": "World History to the End of the Fifteenth Century"
+  },
+  "CHY4C": {
+    "amount": 49900,
+    "label": "World History since the Fifteenth Century"
+  },
+  "CHY4U": {
+    "amount": 49900,
+    "label": "World History since the Fifteenth Century"
+  },
+  "CIA4U": {
+    "amount": 49900,
+    "label": "Analysing Current Economic Issues"
+  },
+  "CIC4E": {
+    "amount": 49900,
+    "label": "Making Personal Economic Choices"
+  },
+  "CIE3M": {
+    "amount": 49900,
+    "label": "The Individual and the Economy"
+  },
+  "CLN4C": {
+    "amount": 49900,
+    "label": "Legal Studies"
+  },
+  "CLN4U": {
+    "amount": 49900,
+    "label": "Canadian and International Law"
+  },
+  "CLU3E": {
+    "amount": 49900,
+    "label": "Understanding Canadian Law in Everyday Life"
+  },
+  "CLU3M": {
+    "amount": 49900,
+    "label": "Understanding Canadian Law"
+  },
+  "CPC3O": {
+    "amount": 49900,
+    "label": "Politics in Action: Making Change"
+  },
+  "CPW4U": {
+    "amount": 49900,
+    "label": "Canadian and International Politics"
+  },
+  "ENG2D": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "ENG2P": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "ENG3C": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "ENG3E": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "ENG3U": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "ENG4C": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "ENG4E": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "ENG4U": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "ENL1W": {
+    "amount": 49900,
+    "label": "English"
+  },
+  "GLC2O": {
+    "amount": 49900,
+    "label": "Career Studies"
+  },
+  "GLE1O": {
+    "amount": 49900,
+    "label": "Learning Strategies 1: Skills for Success in Secondary School"
+  },
+  "GLN4O": {
+    "amount": 49900,
+    "label": "Navigating the Workplace"
+  },
+  "GLS1O": {
+    "amount": 49900,
+    "label": "Learning Strategies 1: Skills for Success in Secondary School"
+  },
+  "GPP3O": {
+    "amount": 49900,
+    "label": "Leadership and Peer Support"
+  },
+  "GWL3O": {
+    "amount": 49900,
+    "label": "Designing Your Future"
+  },
+  "HFA4C": {
+    "amount": 49900,
+    "label": "Nutrition and Health"
+  },
+  "HFA4U": {
+    "amount": 49900,
+    "label": "Nutrition and Health"
+  },
+  "HFC3E": {
+    "amount": 49900,
+    "label": "Food and Culture"
+  },
+  "HFC3M": {
+    "amount": 49900,
+    "label": "Food and Culture"
+  },
+  "HFL4E": {
+    "amount": 49900,
+    "label": "Food and Healthy Living"
+  },
+  "HFN1O": {
+    "amount": 49900,
+    "label": "Food and Nutrition"
+  },
+  "HFN2O": {
+    "amount": 49900,
+    "label": "Food and Nutrition"
+  },
+  "HHD3O": {
+    "amount": 49900,
+    "label": "Dynamics of Human Relationships"
+  },
+  "HHG4M": {
+    "amount": 49900,
+    "label": "Human Development throughout the Lifespan"
+  },
+  "HHS4C": {
+    "amount": 49900,
+    "label": "Families in Canada"
+  },
+  "HHS4U": {
+    "amount": 49900,
+    "label": "Families in Canada"
+  },
+  "HIF1O": {
+    "amount": 49900,
+    "label": "Exploring Family Studies"
+  },
+  "HIF2O": {
+    "amount": 49900,
+    "label": "Exploring Family Studies"
+  },
+  "HIP4O": {
+    "amount": 49900,
+    "label": "Personal Life Management"
+  },
+  "HLS3O": {
+    "amount": 49900,
+    "label": "Housing and Home Design"
+  },
+  "HNB4M": {
+    "amount": 49900,
+    "label": "The World of Fashion"
+  },
+  "HNC3C": {
+    "amount": 49900,
+    "label": "Understanding Fashion"
+  },
+  "HNL2O": {
+    "amount": 49900,
+    "label": "Clothing"
+  },
+  "HPC3O": {
+    "amount": 49900,
+    "label": "Raising Healthy Children"
+  },
+  "HPD4C": {
+    "amount": 49900,
+    "label": "Working with School-Age Children and Adolescents"
+  },
+  "HPW3C": {
+    "amount": 49900,
+    "label": "Working with Infants and Young Children"
+  },
+  "HRF3O": {
+    "amount": 49900,
+    "label": "World Religions and Belief Traditions in Daily Life"
+  },
+  "HRT3M": {
+    "amount": 49900,
+    "label": "World Religions and Belief Traditions: Perspectives, Issues, and Challenges"
+  },
+  "HSB4U": {
+    "amount": 49900,
+    "label": "Challenge and Change in Society"
+  },
+  "HSC4M": {
+    "amount": 49900,
+    "label": "World Cultures"
+  },
+  "HSE3E": {
+    "amount": 49900,
+    "label": "Equity, Diversity, and Social Justice"
+  },
+  "HSE4M": {
+    "amount": 49900,
+    "label": "Equity and Social Justice: From Theory to Practice"
+  },
+  "HSG3M": {
+    "amount": 49900,
+    "label": "Gender Studies"
+  },
+  "HSP3C": {
+    "amount": 49900,
+    "label": "Introduction to Anthropology, Psychology, and Sociology"
+  },
+  "HSP3U": {
+    "amount": 49900,
+    "label": "Introduction to Anthropology, Psychology, and Sociology"
+  },
+  "HZB3M": {
+    "amount": 49900,
+    "label": "Philosophy: The Big Questions"
+  },
+  "HZT4U": {
+    "amount": 49900,
+    "label": "Philosophy: Questions and Theories"
+  },
+  "ICD2O": {
+    "amount": 49900,
+    "label": "Digital Technology and Innovations in the Changing World"
+  },
+  "ICS3C": {
+    "amount": 49900,
+    "label": "Introduction to Computer Programming"
+  },
+  "ICS3U": {
+    "amount": 49900,
+    "label": "Introduction to Computer Science"
+  },
+  "ICS4C": {
+    "amount": 49900,
+    "label": "Computer Programming"
+  },
+  "ICS4U": {
+    "amount": 49900,
+    "label": "Computer Science"
+  },
+  "MAP4C": {
+    "amount": 49900,
+    "label": "Foundations for College Mathematics"
+  },
+  "MBF3C": {
+    "amount": 49900,
+    "label": "Foundations for College Mathematics"
+  },
+  "MCF3M": {
+    "amount": 49900,
+    "label": "Functions and Applications"
+  },
+  "MCR3U": {
+    "amount": 49900,
+    "label": "Functions"
+  },
+  "MCT4C": {
+    "amount": 49900,
+    "label": "Mathematics for College Technology"
+  },
+  "MCV4U": {
+    "amount": 49900,
+    "label": "Calculus and Vectors"
+  },
+  "MDM4U": {
+    "amount": 49900,
+    "label": "Mathematics of Data Management"
+  },
+  "MEL3E": {
+    "amount": 49900,
+    "label": "Mathematics for Work and Everyday Life"
+  },
+  "MEL4E": {
+    "amount": 49900,
+    "label": "Mathematics for Work and Everyday Life"
+  },
+  "MFM2P": {
+    "amount": 49900,
+    "label": "Foundations of Mathematics"
+  },
+  "MHF4U": {
+    "amount": 49900,
+    "label": "Advanced Functions"
+  },
+  "MPM2D": {
+    "amount": 49900,
+    "label": "Principles of Mathematics"
+  },
+  "MTH1W": {
+    "amount": 49900,
+    "label": "Mathematics"
+  },
+  "PLF4M": {
+    "amount": 49900,
+    "label": "Recreation and Healthy Active Living Leadership"
+  },
+  "PPL1O": {
+    "amount": 49900,
+    "label": "Healthy Active Living Education"
+  },
+  "PPL2O": {
+    "amount": 49900,
+    "label": "Healthy Active Living Education"
+  },
+  "PPL3O": {
+    "amount": 49900,
+    "label": "Healthy Active Living Education"
+  },
+  "PPL4O": {
+    "amount": 49900,
+    "label": "Healthy Active Living Education"
+  },
+  "PPZ3C": {
+    "amount": 49900,
+    "label": "Health for Life"
+  },
+  "PSK4U": {
+    "amount": 49900,
+    "label": "Introductory Kinesiology"
+  },
+  "SBI3C": {
+    "amount": 49900,
+    "label": "Biology"
+  },
+  "SBI3U": {
+    "amount": 49900,
+    "label": "Biology"
+  },
+  "SBI4U": {
+    "amount": 49900,
+    "label": "Biology"
+  },
+  "SCH3U": {
+    "amount": 49900,
+    "label": "Chemistry"
+  },
+  "SCH4C": {
+    "amount": 49900,
+    "label": "Chemistry"
+  },
+  "SCH4U": {
+    "amount": 49900,
+    "label": "Chemistry"
+  },
+  "SES4U": {
+    "amount": 49900,
+    "label": "Earth and Space Science"
+  },
+  "SNC1W": {
+    "amount": 49900,
+    "label": "Science"
+  },
+  "SNC2D": {
+    "amount": 49900,
+    "label": "Science"
+  },
+  "SNC2P": {
+    "amount": 49900,
+    "label": "Science"
+  },
+  "SNC4E": {
+    "amount": 49900,
+    "label": "Science"
+  },
+  "SNC4M": {
+    "amount": 49900,
+    "label": "Science"
+  },
+  "SPH3U": {
+    "amount": 49900,
+    "label": "Physics"
+  },
+  "SPH4U": {
+    "amount": 49900,
+    "label": "Physics"
+  },
+  "SVN3M": {
+    "amount": 49900,
+    "label": "Environmental Science"
+  },
+  "TAS1O": {
+    "amount": 49900,
+    "label": "Technology and the Skilled Trades"
+  },
+  "TAS2O": {
+    "amount": 49900,
+    "label": "Technology and the Skilled Trades"
+  },
+  "TCJ3C": {
+    "amount": 49900,
+    "label": "Construction Engineering Technology"
+  },
+  "TCJ3E": {
+    "amount": 49900,
+    "label": "Construction Technology"
+  },
+  "TCJ4C": {
+    "amount": 49900,
+    "label": "Construction Engineering Technology"
+  },
+  "TCJ4E": {
+    "amount": 49900,
+    "label": "Construction Technology"
+  },
+  "TDJ3M": {
+    "amount": 49900,
+    "label": "Technological Design"
+  },
+  "TDJ3O": {
+    "amount": 49900,
+    "label": "Technological Design and the Environment"
+  },
+  "TDJ4M": {
+    "amount": 49900,
+    "label": "Technological Design"
+  },
+  "TDJ4O": {
+    "amount": 49900,
+    "label": "Technological Design in the Twenty-first Century"
+  },
+  "TEJ3E": {
+    "amount": 49900,
+    "label": "Computer Technology"
+  },
+  "TEJ3M": {
+    "amount": 49900,
+    "label": "Computer Engineering Technology"
+  },
+  "TEJ4E": {
+    "amount": 49900,
+    "label": "Computer Technology"
+  },
+  "TEJ4M": {
+    "amount": 49900,
+    "label": "Computer Engineering Technology"
+  },
+  "TFJ3C": {
+    "amount": 49900,
+    "label": "Hospitality and Tourism"
+  },
+  "TFJ3E": {
+    "amount": 49900,
+    "label": "Hospitality and Tourism"
+  },
+  "TFJ4C": {
+    "amount": 49900,
+    "label": "Hospitality and Tourism"
+  },
+  "TFJ4E": {
+    "amount": 49900,
+    "label": "Hospitality and Tourism"
+  },
+  "TGJ3M": {
+    "amount": 49900,
+    "label": "Communications Technology"
+  },
+  "TGJ3O": {
+    "amount": 49900,
+    "label": "Communications Technology: Broadcast and Print Production"
+  },
+  "TGJ4M": {
+    "amount": 49900,
+    "label": "Communications Technology"
+  },
+  "TGJ4O": {
+    "amount": 49900,
+    "label": "Communications Technology: Digital Imagery and Web Design"
+  },
+  "THJ3E": {
+    "amount": 49900,
+    "label": "Green Industries"
+  },
+  "THJ3M": {
+    "amount": 49900,
+    "label": "Green Industries"
+  },
+  "THJ4E": {
+    "amount": 49900,
+    "label": "Green Industries"
+  },
+  "THJ4M": {
+    "amount": 49900,
+    "label": "Green Industries"
+  },
+  "TMJ3C": {
+    "amount": 49900,
+    "label": "Manufacturing Technology"
+  },
+  "TMJ3E": {
+    "amount": 49900,
+    "label": "Manufacturing Technology"
+  },
+  "TMJ3M": {
+    "amount": 49900,
+    "label": "Manufacturing Engineering Technology"
+  },
+  "TMJ4C": {
+    "amount": 49900,
+    "label": "Manufacturing Technology"
+  },
+  "TMJ4E": {
+    "amount": 49900,
+    "label": "Manufacturing Technology"
+  },
+  "TMJ4M": {
+    "amount": 49900,
+    "label": "Manufacturing Engineering Technology"
+  },
+  "TOJ4C": {
+    "amount": 49900,
+    "label": "Child Development and Gerontology"
+  },
+  "TPJ3C": {
+    "amount": 49900,
+    "label": "Health Care"
+  },
+  "TPJ3M": {
+    "amount": 49900,
+    "label": "Health Care"
+  },
+  "TPJ4C": {
+    "amount": 49900,
+    "label": "Health Care"
+  },
+  "TPJ4E": {
+    "amount": 49900,
+    "label": "Health Care: Support Services"
+  },
+  "TPJ4M": {
+    "amount": 49900,
+    "label": "Health Care"
+  },
+  "TTJ3C": {
+    "amount": 49900,
+    "label": "Transportation Technology"
+  },
+  "TTJ4C": {
+    "amount": 49900,
+    "label": "Transportation Technology"
+  },
+  "TTJ4E": {
+    "amount": 49900,
+    "label": "Transportation Technology: Vehicle Maintenance"
+  },
+  "TWJ3E": {
+    "amount": 49900,
+    "label": "Custom Woodworking"
+  },
+  "TWJ4E": {
+    "amount": 49900,
+    "label": "Custom Woodworking"
+  },
+  "TXJ3E": {
+    "amount": 49900,
+    "label": "Hairstyling and Aesthetics"
+  },
+  "TXJ4E": {
+    "amount": 49900,
+    "label": "Hairstyling and Aesthetics"
+  }
+}

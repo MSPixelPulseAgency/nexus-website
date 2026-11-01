@@ -18,4 +18,6 @@ Inspect the exact deployment, target, status and aliases. Verify HTTP 200 for ho
 
 ## Reliability and privacy
 
+For payment work, first read `docs/stripe-payments.md` and `.ai-agents/payments-agent.md`. Production currently runs on Cloudways/PHP; Vercel is static continuity only and cannot run the payment backend. Do not merge payment preparation into main or deploy production without explicit approval. Keep private payment state/configuration outside the web root and independent of public-site rollback; keep webhook reconciliation available while new checkout is paused.
+
 Keep rollback possible through Git and Vercel history. Never expose tokens or environment values. Registration delivery stays disabled until approved privacy, retention, sender, recipient and error-handling configuration exists. Report `CONFIG NEEDED` rather than treating a local UI state as delivered email.

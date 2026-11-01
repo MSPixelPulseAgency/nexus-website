@@ -12,6 +12,11 @@
   ],
   "redirects": [
     {
+      "source": "/api/payments/:path*",
+      "destination": "/payment-unavailable.json",
+      "permanent": false
+    },
+    {
       "source": "/api/brand/:path*",
       "destination": "/brand-guidelines",
       "permanent": false

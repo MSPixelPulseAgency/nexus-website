@@ -1,0 +1,15 @@
+{
+    "name": "mspixelpulse/nexus-payments",
+    "description": "Private Cloudways payment service for Nexus Education",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.1",
+        "ext-pdo": "*",
+        "ext-pdo_sqlite": "*",
+        "stripe/stripe-php": "^22.1"
+    },
+    "scripts": {
+        "test": ["php tests/payments.php", "python3 tests/test-http.py", "python3 tests/preflight.py"]
+    }
+}

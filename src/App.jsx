@@ -28,6 +28,7 @@ const LegalPage = lazy(() => import("./pages/LegalPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const PathwayPage = lazy(() => import("./pages/PathwayPage"));
 const VideosPage = lazy(() => import("./pages/VideosPage"));
 const ResourcesPage = lazy(() => import("./pages/ResourcesPage"));
@@ -66,7 +67,9 @@ export default function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/enroll" element={<RegisterPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/checkout" element={<RegisterPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/payment/success" element={<CheckoutPage view="success" />} />
+          <Route path="/payment/cancel" element={<CheckoutPage view="cancel" />} />
           <Route path="/credit-recovery" element={<PathwayPage slug="credit-recovery" />} />
           <Route path="/upgrade-courses" element={<PathwayPage slug="upgrade-courses" />} />
           <Route path="/adult-education" element={<PathwayPage slug="adult-education" />} />

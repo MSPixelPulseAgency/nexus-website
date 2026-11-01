@@ -2,6 +2,7 @@ import { ArrowRight, ClipboardList } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getCourseAccent, getCourseVisual } from "../data/site";
 import AddToCartButton from "./AddToCartButton";
+import { formatTuition } from "../data/tuition";
 
 export default function CourseCard({ course, compact = false }) {
   const visual = getCourseVisual(course, 760);
@@ -15,6 +16,7 @@ export default function CourseCard({ course, compact = false }) {
         <span className="mini-label">{course.department}</span>
         <h3><Link to={`/courses/${course.slug}`}>{course.title}</Link></h3>
         <div className="tag-row"><span>Grade {course.grade}</span><span>{course.type}</span><span>{course.credit} credit</span></div>
+        <p className="course-tuition"><strong>{formatTuition()}</strong><span> / course · one-time tuition</span></p>
         {!compact && <><p>{course.description}</p><small className="course-prerequisite"><strong>Prerequisite:</strong> {course.prerequisite}</small></>}
       </div>
       <div className="course-actions">

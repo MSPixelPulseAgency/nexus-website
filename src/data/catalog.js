@@ -1,9 +1,11 @@
 import courseRows from "./course-summaries.js";
 import { blogCategories, blogs } from "./blogCatalog.js";
 import { rankCourses } from "./courseSearch.js";
+import { COURSE_TUITION_CENTS } from "./tuition.js";
 
 export const courses = courseRows.map((row) => ({
   ...row,
+  priceCents: COURSE_TUITION_CENTS,
   searchText: `${row.code} ${row.title} grade ${row.grade} ${row.type} ${row.department}`.toLowerCase(),
 }));
 

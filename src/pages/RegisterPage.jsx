@@ -3,7 +3,9 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import NexusSearch from "../components/NexusSearch";
 import Seo from "../components/Seo";
+import PaymentCTA from "../components/PaymentCTA";
 import useCart from "../hooks/useCart";
+import { COURSE_TUITION_CENTS, formatTuition } from "../data/tuition";
 
 const initialForm = {
   firstName: "", middleName: "", lastName: "", dob: "", email: "", phone: "", currentGrade: "",
@@ -57,7 +59,7 @@ export default function RegisterPage() {
             {status.state !== "idle" && <div className="submission-status is-error" role="alert"><AlertCircle size={22} /><div><strong>Submission not sent</strong><p>{status.message}</p></div></div>}
           </form>
         </div>
-        <aside className="registration-summary"><ShieldCheck size={28} /><span className="mini-label">SELECTED COURSES</span><h2>{items.length ? `${items.length} selected` : "None selected"}</h2>{courseSummary.map((course) => <div className="registration-course" key={course.code}><span className="course-code">{course.code}</span><strong>{course.title}</strong></div>)}<p>No payment is collected. Pricing and enrolment are not confirmed by completing this page.</p><Link className="text-link" to="/cart">Edit course cart</Link><a className="text-link" href="https://www.dcp.edu.gov.on.ca/en/course-descriptions-and-prerequisites" target="_blank" rel="noreferrer">Ontario course descriptions <ExternalLink size={15} /></a></aside>
+        <aside className="registration-summary"><ShieldCheck size={28} /><span className="mini-label">SELECTED COURSES</span><h2>{items.length ? `${items.length} selected` : "None selected"}</h2>{courseSummary.map((course) => <div className="registration-course" key={course.code}><span className="course-code">{course.code}</span><strong>{course.title}</strong><span>{formatTuition()}</span></div>)}<div className="registration-tuition-total"><span>Tuition total (CAD)</span><strong>{formatTuition(items.length * COURSE_TUITION_CENTS)}</strong></div><p>One-time tuition is {formatTuition()} per course. Registration delivery is pending; this form does not submit student information or confirm enrollment.</p>{items.length > 0 && <PaymentCTA className="btn btn-primary" />}<p className="cart-payment-note">Payment and registration are separate steps. No student, guardian or academic information from this form is sent to Stripe. Sandbox payments are clearly marked and do not move money.</p><Link className="text-link" to="/cart">Edit course cart</Link><a className="text-link" href="https://www.dcp.edu.gov.on.ca/en/course-descriptions-and-prerequisites" target="_blank" rel="noreferrer">Ontario course descriptions <ExternalLink size={15} /></a></aside>
       </section>
     </>
   );

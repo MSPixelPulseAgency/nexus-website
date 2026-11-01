@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CartContext from "./cart-context";
+import { courses } from "../data/catalog";
 
 const STORAGE_KEY = "nexus-course-cart";
 function readCart() {
   try {
     const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "[]");
-    return Array.isArray(parsed) ? parsed.filter((item) => item?.code && item?.slug) : [];
+    const codes = Array.isArray(parsed) ? [...new Set(parsed.map((item) => item?.code))] : [];
+    return codes.map((code) => courses.find((course) => course.code === code)).filter(Boolean);
   } catch {
     return [];
   }
@@ -18,7 +20,12 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     itemsRef.current = items;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // Storage may be blocked or full. Keep the current visit usable.
+      setAnnouncement("Your course selections are available for this visit. This browser could not save them for later.");
+    }
   }, [items]);
 
   const addCourse = useCallback((course) => {

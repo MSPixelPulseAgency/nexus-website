@@ -1,12 +1,14 @@
 import { GraduationCap, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const sessionKey = "nexus-enrollment-prompt-session-closed";
 const dismissedUntilKey = "nexus-enrollment-prompt-dismissed-until";
 const dismissDays = 14;
 
 export default function GuidancePrompt() {
+  const { pathname } = useLocation();
+  const isPaymentPage = pathname === "/checkout" || pathname.startsWith("/payment/");
   const [visible, setVisible] = useState(false);
   const dialogRef = useRef(null);
   const previousFocusRef = useRef(null);
@@ -27,6 +29,7 @@ export default function GuidancePrompt() {
   }, [finishClose]);
 
   useEffect(() => {
+    if (isPaymentPage) return undefined;
     try {
       const dismissedUntil = Number(window.localStorage.getItem(dismissedUntilKey) || 0);
       if (dismissedUntil > Date.now() || window.sessionStorage.getItem(sessionKey)) return undefined;
@@ -35,10 +38,10 @@ export default function GuidancePrompt() {
     }
     const timer = window.setTimeout(() => setVisible(true), 10000);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [isPaymentPage]);
 
   useEffect(() => {
-    if (!visible) return undefined;
+    if (!visible || isPaymentPage) return undefined;
     previousFocusRef.current = document.activeElement;
     const closeButton = dialogRef.current?.querySelector("button");
     const focusTimer = window.setTimeout(() => closeButton?.focus(), 30);
@@ -56,9 +59,9 @@ export default function GuidancePrompt() {
     };
     document.addEventListener("keydown", handleKey);
     return () => { window.clearTimeout(focusTimer); document.removeEventListener("keydown", handleKey); };
-  }, [closeForSession, visible]);
+  }, [closeForSession, visible, isPaymentPage]);
 
-  if (!visible) return null;
+  if (!visible || isPaymentPage) return null;
 
   const promptButtonBorder = { border: "2px solid #F98125" };
 

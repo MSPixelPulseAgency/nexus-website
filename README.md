@@ -34,7 +34,7 @@ npm run build
 
 Production currently serves `dist/` from the Cloudways (Apache + PHP) host behind `public/.htaccess`; the Vercel project remains linked for deployment continuity. The `/brand-guidelines` page is public, while its downloads are protected by the PHP endpoints documented in `docs/brand-asset-access.md`, which need a one-time secret configuration outside the web root.
 
-The site must remain linked to the existing Vercel project `nexuseps`, use the `main` production branch, build with `npm run build`, and output `dist`. `vercel.json` provides the SPA rewrite required for direct route refreshes.
+The existing Vercel project `nexuseps` follows `main` for static continuity/preview builds with `npm run build` and output `dist`. The canonical production site uses the Cloudways PHP host; Vercel does not run its PHP services. Preserve both existing linkages and verify the target before any approved deployment. `vercel.json` provides the SPA rewrite required for direct route refreshes.
 
 The course cart persists non-sensitive course selections in localStorage and prevents duplicates. `/cart`, `/register` and `/checkout` provide the selection and registration workflow without inventing prices.
 
@@ -42,4 +42,16 @@ The registration page validates fields locally but does not transmit or store se
 
 The public catalogue is generated from a read-only export of the Nexus Moodle catalogue. A record is not a promise of active availability; public course pages consistently ask visitors to confirm availability and eligibility.
 
-This repository is only for the public React/Vite website. Do not modify or replace the separate Nexus Moodle LMS repository from this project.
+This repository contains the public React/Vite website and its private PHP payment service. Do not modify or replace the separate Nexus Moodle LMS repository from this project.
+
+## Stripe payment preparation
+
+The server-side PHP Checkout integration and `/checkout`, `/payment/success`, `/payment/cancel` pages are prepared for school-approved payment requests. Payments remain disabled by default; enrollment still does not transmit student data and Moodle is unchanged. All 207 courses use the requested CA$499/course catalogue price. Actual Nexus sandbox payments and signed webhook reconciliation have passed. Approved HTTPS staging, production credentials, owner verification, taxes/fees/refund decisions and explicit release approval remain outstanding. See [status, setup, management checklist and rollout](docs/stripe-payments.md).
+
+Private PHP code, dependencies, configuration and SQLite state belong outside the Cloudways web root. Vercel is a static preview/continuity target with payments unavailable. Run `npm run build` before `composer test --working-dir=server/payments`; HTTP checks exercise built PHP endpoints.
+
+## Pricing and disabled payment release preparation
+
+Every course uses `src/data/tuition.json`: CAD 499.00, displayed as CA$499 / course. The build generates the server catalogue and a matching public pricing fingerprint. Run `npm run test:pricing` after a build. Payment entry points show availability from the server and keep student registration delivery separate.
+
+`server/payments/preflight.php` checks a private installation without changing it. `npm run package:payments -- /absolute/new/release-directory` builds a review archive from a clean committed checkout; it does not deploy. Follow [the payment handover](docs/stripe-payments.md) for the exact layout, verification limits and management requirements. Live payments remain disabled.
