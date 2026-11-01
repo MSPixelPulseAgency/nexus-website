@@ -8,7 +8,7 @@ export const faqGroups = {
   Admissions: [
     ["How do I start an inquiry?", "Share your current grade, course interest, academic goal and preferred contact details through the inquiry page."],
     ["What should I prepare?", "Have your current grade, course code if known, relevant prerequisite information and any timing or postsecondary goals ready."],
-    ["Is tuition listed online?", "Tuition is not presented in the current public catalogue. Ask Nexus for current enrollment information before making a decision."],
+    ["Is tuition listed online?", "Tuition is CAD 499.00 per course. Review the total in your course cart. Online checkout is currently a sandbox test; Nexus must confirm eligibility, availability and applicable payment terms before live enrollment."],
   ],
   Learning: [
     ["How is online learning organized?", "Enrolled students use a digital learning environment for course materials, assignments, progress and communication. Course-specific expectations are shared after access is confirmed."],
