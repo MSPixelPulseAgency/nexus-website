@@ -124,7 +124,7 @@ Checkout and return-page reads are bound to the displayed opaque request ID as w
 ## Verification evidence
 
 - Frontend lint/build and strict Composer validation pass; Composer audit reports no known advisories.
-- 42 local payment/signature/cart-mode checks, 44 HTTP/cookie/operator/cart checks and 10 read-only deployment preflight checks pass. The pricing check independently validates all 207 frontend/server entries and the public/private release fingerprint. No external Stripe requests or real charges are made by these suites.
+- 51 local payment/signature/cart-mode/ACL checks, 44 HTTP/cookie/operator/cart checks and 10 read-only deployment preflight checks pass. The pricing check independently validates all 207 frontend/server entries and the public/private release fingerprint. No external Stripe requests or real charges are made by these suites.
 - Browser: synthetic CA$499 request rendered; token removed from URL; keyboard navigation verified; no browser errors observed. No horizontal overflow at 320, 360, 375, 390, 412, 430, 768, 820, 1024, 1280, 1440, 1728 and 1920 pixels.
 - Direct success-page navigation shows waiting for confirmation, never a forged paid state. Payment routes have noindex metadata; success/cancel are excluded from the sitemap.
 - The enrollment reminder is suppressed on payment pages; existing styling and cart/enrollment data remain intact.
@@ -143,7 +143,7 @@ php /absolute/private/nexus-payments/preflight.php \
   --document-root=/absolute/public_html
 ```
 
-The state directory must already exist privately with mode 0700 and config must have no group/world permissions (normally 0600). The command verifies PHP/cURL/PDO SQLite, private placement, disabled checkout, HTTPS config, public endpoints, and matching public/private catalogue and config. It returns nonzero on any failed check. Its `liveLaunchApproved` value is always false: an offline preflight cannot authorize launch or prove real HTTPS/cache/webhook behavior.
+The state directory must already exist privately with mode 0700 and config normally uses 0600. On Cloudways, master-user uploads and PHP use different users: pass `--runtime-user=<verified-application-user>` to permit a narrow numeric POSIX ACL for the operator and that application user only. Group/other access, unrelated ACL users, runtime writes to master-owned config, and unsafe inherited ACLs are rejected. Grant runtime read/traverse on private code/config and read/write/traverse on state; retain operator access for backup. Do not use 0777 or broadly readable config. The command verifies PHP/cURL/PDO SQLite, private placement, disabled checkout, HTTPS config, public endpoints, and matching public/private catalogue and config. It returns nonzero on any failed check. Its `liveLaunchApproved` value is always false: an offline preflight cannot authorize launch or prove real HTTPS/cache/webhook behavior.
 
 From a clean committed checkout, prepare an archive outside the repo:
 
@@ -153,7 +153,7 @@ npm run package:payments -- /absolute/new/release-directory
 
 The packager builds, verifies pricing, runs payment/preflight suites and keeps `public_html/` separate from `private_html/nexus-payments/`. It moves prerendered HTML into the Cloudways `.routes/` store, validates noindex payment pages and checks public files for private payment material. It includes a source-commit/file-hash manifest and disabled installation instructions. No secrets, active config, SQLite state or deployment credentials are included. It never connects to a host, uploads files, merges a branch, changes a live setting or deploys production. Keep it as a review artifact until host/staging and management requirements are satisfied.
 
-Current public-host checks: HTTPS returned Nginx headers, and the existing PHP brand session endpoint returned JSON with private/no-store caching. The production payment config endpoint returned HTTP 404. These observations confirm PHP service and the absence of this payment installation; they do not independently authenticate the Cloudways app, SSH/SFTP access, runtime extensions or cache settings. No Nexus/Cloudways SSH profile was configured locally. Do not infer hosting eligibility, deploy, or change routing from these checks.
+The 2026-11-01 continuation authenticated Cloudways server 1670697 (Nexus Production), public IP 201.79.51.133, website application 6669907 / uzbsczbves. Its document-root homepage hash matched canonical HTTPS. CLI PHP 8.2.35 provides cURL and PDO SQLite; the dashboard application label mentions PHP 8.3, so verify web-PHP execution independently rather than assuming CLI and FPM versions match. Moodle resides in the separate utrmhqdwuv application and must remain untouched. The payment config returned 404 before deployment. Deployment completion and HTTP/cache evidence belong in the release handover.
 
 ## What management must provide or complete
 
@@ -164,9 +164,9 @@ Current public-host checks: HTTPS returned Nginx headers, and the existing PHP b
 - The user confirmed catalogue tuition of CAD 499.00 for every course. Management must still confirm availability/eligibility, tax treatment, extra fees, refund/cancellation terms, statement descriptor, support details and receipt arrangements before live collection.
 - Approve privacy/retention, review staging evidence, then explicitly authorize production deployment and live payments.
 
-## Production rollout — approval required
+## Production rollout — code deployment authorized, live collection gated
 
-Do not merge into main, deploy production or accept real payments during preparation. After management completes the checklist and explicit approval is recorded:
+On 2026-11-01 the user authorized final fixes, PR #5 merge after passing checks, and deployment to the existing Cloudways host with live payments disabled. This supersedes the earlier preparation-only prohibition on merging/deploying code. Management requirements and explicit live collection approval still apply. Perform the following technical installation now, keeping all collection/approval flags false:
 
 1. Back up the public site/private configuration separately from Moodle. Validate staging on the same PHP/runtime/storage setup. Record a known-good rollback artifact and private DB backup outside Git.
 2. Install the reviewed private app/lockfile on the existing Cloudways app. Configure **separate Nexus live credentials and live webhook** only after management activates the account. Set `base_url=https://nexuseps.com`, local HTTP off, final approved prices and verified account ID. Both pricing/live approval flags must explicitly be true for live mode.
@@ -176,3 +176,7 @@ Do not merge into main, deploy production or accept real payments during prepara
 Rollback/pause: set `enabled=false` to block new access/Checkout; **keep webhooks, database and private configuration running** to reconcile already-issued sessions. Restore known-good public assets if needed. Existing Stripe Checkout sessions remain usable until expiry: a website pause does not revoke them. Only management-authorized action may expire outstanding Stripe sessions. Never overwrite payment state with an older website release, remove the webhook as a rollback shortcut, or alter Moodle.
 
 Official references: [Checkout API](https://docs.stripe.com/api/checkout/sessions/create), [fulfillment/idempotency](https://docs.stripe.com/checkout/fulfillment.md?ui=full-page), [webhooks](https://docs.stripe.com/webhooks), [key security](https://docs.stripe.com/keys-best-practices).
+
+## Final journey fixes
+
+Blocked/full browser storage no longer breaks the cart. Payment availability falls back after eight seconds and announces its status accessibly. The server quote exposes its immutable Checkout expiry so the review page stops offering a nearly expired session; paid receipts remain readable. Six ACL security cases and three checkout-expiry cases extend the payment suite; the full suites now total 105 checks.

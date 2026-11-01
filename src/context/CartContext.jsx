@@ -20,7 +20,12 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     itemsRef.current = items;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // Storage may be blocked or full. Keep the current visit usable.
+      setAnnouncement("Your course selections are available for this visit. This browser could not save them for later.");
+    }
   }, [items]);
 
   const addCourse = useCallback((course) => {

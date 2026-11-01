@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../src/Payments.php';
+require __DIR__ . '/../src/PrivatePermissions.php';
 
 use Nexus\Payments\Gateway;
 use Nexus\Payments\PaymentError;
@@ -61,6 +62,14 @@ $config = [
 ];
 
 try {
+    $acl = "user::rw-\nuser:1002:r--\ngroup::---\nmask::r--\nother::---";
+    check(Nexus\Payments\PrivatePermissions::aclAllows($acl, 1001, 1001, 1002, false), 'Explicit runtime read-only ACL is private');
+    check(!Nexus\Payments\PrivatePermissions::aclAllows(str_replace('group::---', 'group::r--', $acl), 1001, 1001, 1002, false), 'Readable group is rejected');
+    check(!Nexus\Payments\PrivatePermissions::aclAllows($acl . "\nuser:1003:r--", 1001, 1001, 1002, false), 'Unrelated ACL user is rejected');
+    check(!Nexus\Payments\PrivatePermissions::aclAllows(str_replace('user:1002:r--', 'user:1002:rw-', str_replace('mask::r--', 'mask::rw-', $acl)), 1001, 1001, 1002, false), 'Runtime cannot rewrite master-owned config');
+    $stateAcl = "user::rwx\nuser:1002:rwx\ngroup::---\nmask::rwx\nother::---";
+    check(Nexus\Payments\PrivatePermissions::aclAllows($stateAcl, 1001, 1001, 1002, true), 'Private runtime state ACL permits required operations');
+    check(!Nexus\Payments\PrivatePermissions::aclAllows($stateAcl . "\ndefault:other::r--", 1001, 1001, 1002, true), 'Unsafe inherited permissions are rejected');
     $gateway = new TestGateway();
     $payments = new Payments($config, $gateway);
     foreach ([['mode' => 'live'], ['secret_key' => 'sk_live_unitfixture'], ['base_url' => 'http://school.example'], ['base_url' => 'https://user@school.example']] as $invalid) {
@@ -86,6 +95,7 @@ try {
     rejects(static fn () => $payments->authorize(str_repeat('f', 64), 1001), 403);
     rejects(static fn () => $payments->authorize($token, 200000), 403);
     check($payments->quote($id)['amount'] === 99800, 'Two provisional CA$499 courses total CA$998');
+    check($payments->quote($id)['checkoutExpires'] === null, 'Unopened request has no checkout expiry');
     rejects(static fn () => $payments->issue('TEST-ONLY', ['MHF4U'], 1001));
     $gateway->account = 'acct_other';
     rejects(static fn () => $payments->checkout($id, 1002), 503);
@@ -98,6 +108,8 @@ try {
     check($gateway->calls[0] === $gateway->calls[1], 'Network retry uses identical parameters and idempotency key');
     check($payments->checkout($id, 1004) === $url && count($gateway->calls) === 2, 'Repeated checkout reuses the existing session');
     check($payments->quote($id)['status'] === 'pending', 'Checkout creation is pending, not paid');
+    check($payments->quote($id)['checkoutExpires'] === 2862, 'Receipt exposes the immutable checkout expiry for recovery UI');
+    rejects(static fn () => $payments->checkout($id, 2802), 410);
     $sessionId = 'cs_test_' . $id;
     $session = $gateway->sessions[$sessionId];
     $payments->webhook(eventFor($session, 'evt_unpaid'), 1005);

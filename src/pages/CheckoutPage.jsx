@@ -83,7 +83,8 @@ export default function CheckoutPage({ view = "checkout" }) {
 
   const { quote } = state;
   const paid = quote?.status === "paid";
-  const closed = ["expired", "failed"].includes(quote?.status) || (quote && quote.expires * 1000 <= Date.now());
+  const closed = ["expired", "failed"].includes(quote?.status) || (quote && (quote.expires * 1000 <= Date.now()
+    || (quote.checkoutExpires !== null && quote.checkoutExpires * 1000 <= Date.now() + 60000)));
   const title = paid ? (quote.mode === "test" ? "Test payment confirmed." : "Payment confirmed.") : view === "success" ? "Checking your payment." : view === "cancel" ? "Return to your payment." : "Your Nexus payment.";
 
   return (

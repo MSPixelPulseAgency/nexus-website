@@ -5,7 +5,10 @@ declare(strict_types=1);
 // configuration, creates payment records, or enables checkout.
 if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
 require __DIR__ . '/src/Payments.php';
-$options = getopt('', ['config:', 'document-root:']);
+require __DIR__ . '/src/PrivatePermissions.php';
+$options = getopt('', ['config:', 'document-root:', 'runtime-user:']);
+$runtimeUser = isset($options['runtime-user']) && function_exists('posix_getpwnam') ? posix_getpwnam($options['runtime-user']) : null;
+$runtimeUid = is_array($runtimeUser) && $runtimeUser['uid'] > 0 ? $runtimeUser['uid'] : null;
 $configFile = realpath($options['config'] ?? getenv('NEXUS_PAYMENT_CONFIG_FILE') ?: '');
 $documentRoot = realpath($options['document-root'] ?? '');
 $checks = [];
@@ -19,11 +22,12 @@ $outside = static function (string $path, string $root): bool {
 $check('php_8_1_or_newer', PHP_VERSION_ID >= 80100);
 $check('curl', extension_loaded('curl'));
 $check('pdo_sqlite', extension_loaded('pdo_sqlite'));
+$check('runtime_user', !isset($options['runtime-user']) || $runtimeUid !== null);
 $check('stripe_dependency', is_file(__DIR__ . '/vendor/autoload.php'));
 $check('document_root_exists', is_string($documentRoot) && is_file($documentRoot . '/index.html'));
 $check('private_application', is_string($documentRoot) && $outside(__DIR__, $documentRoot));
 $check('private_config', is_string($configFile) && is_string($documentRoot) && $outside($configFile, $documentRoot));
-$check('config_permissions', is_string($configFile) && (fileperms($configFile) & 0077) === 0);
+$check('config_permissions', is_string($configFile) && \Nexus\Payments\PrivatePermissions::check($configFile, $runtimeUid, false));
 $config = null;
 if ($checks['private_config'] && $checks['config_permissions']) {
     set_error_handler(static function (): never { throw new RuntimeException('Configuration could not be loaded.'); });
@@ -38,7 +42,7 @@ $check('checkout_disabled', is_array($config) && ($config['enabled'] ?? false) =
 $check('https_origin', is_array($config) && str_starts_with($config['base_url'] ?? '', 'https://') && ($config['allow_local_http'] ?? false) === false);
 $state = $config['state_dir'] ?? '';
 $check('private_state_location', is_string($state) && $state !== '' && is_string($documentRoot) && $outside($state, $documentRoot));
-$check('state_permissions', is_string($state) && is_dir($state) && is_writable($state) && (fileperms($state) & 0077) === 0);
+$check('state_permissions', is_string($state) && is_dir($state) && is_writable($state) && \Nexus\Payments\PrivatePermissions::check($state, $runtimeUid, true));
 $check('public_payment_endpoints', is_string($documentRoot) && is_file($documentRoot . '/api/payments/webhook.php') && is_file($documentRoot . '/api/payments/cart.php'));
 $manifest = null;
 $catalogue = null;

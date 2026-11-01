@@ -188,7 +188,9 @@ final class Payments
             'requestId' => $request['id'],
             'reference' => $request['enrollment_ref'], 'items' => json_decode($request['items'], true, 512, JSON_THROW_ON_ERROR),
             'amount' => (int) $request['amount'], 'currency' => $request['currency'],
-            'status' => $request['status'], 'expires' => (int) $request['expires'], 'mode' => $this->config['mode'],
+            'status' => $request['status'], 'expires' => (int) $request['expires'],
+            'checkoutExpires' => $request['checkout_expires'] === null ? null : (int) $request['checkout_expires'],
+            'mode' => $this->config['mode'],
         ];
     }
 
